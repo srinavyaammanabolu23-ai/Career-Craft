@@ -1,0 +1,2596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Career Craft</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@10..48,400;10..48,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- PDF Generation Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <style>
+        /* Base styles and font import */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #1a1a2e; /* A darker, more professional background */
+            font-family: 'Bricolage Grotesque', sans-serif;
+            overflow: hidden; /* Hide scrollbars initially */
+            transition: background-color 0.5s ease;
+        }
+
+        /* Splash and Login Page containers for smooth transition */
+        #splashScreen {
+            display: grid;
+            place-items: center;
+            width: 100%;
+            height: 100%;
+            position: fixed; /* Ensures it covers the full viewport and centers correctly */
+            top: 0;
+            left: 0;
+            z-index: 9999; /* Keeps it on top of other page elements */
+            background-color: #1a1a2e; /* Provides a solid background during the animation */
+            opacity: 1;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        #loginPage {
+            display: none; /* Initially hidden */
+            width: 100%;
+            height: 100%;
+            display: grid;
+            place-items: center;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            position: absolute; /* Ensure it covers the splash screen */
+            top: 0;
+            left: 0;
+            box-sizing: border-box; /* Ensures padding is included in the element's total width */
+        }
+        
+        /* New Login Form Styles */
+        .login-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            width: 90%;
+            max-width: 380px;
+            padding: 3rem;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            color: #fff;
+            text-align: center;
+        }
+
+        .login-card .icon {
+            width: 4em;
+            margin-bottom: 2rem;
+            color: #fff;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
+            box-sizing: border-box;
+        }
+
+        .input-group input:focus {
+            border-color: #af40ff;
+        }
+
+        .input-group input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .login-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+        }
+
+        .remember-me input {
+            margin-right: 0.5rem;
+        }
+        
+        .forgot-password {
+            color: #ddd;
+            text-decoration: none;
+        }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+        
+        .signin-btn, .otp-btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .signin-btn {
+            background: linear-gradient(744deg, #af40ff, #5b42f3 60%, #00ddeb);
+        }
+
+        .otp-btn {
+            background: rgba(255, 255, 255, 0.15);
+            margin-top: 1rem;
+        }
+
+        .signin-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(91, 66, 243, 0.4);
+        }
+        .otp-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .divider {
+            margin: 2rem 0;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .divider:not(:empty)::before { margin-right: .5em; }
+        .divider:not(:empty)::after { margin-left: .5em; }
+
+        .social-login {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .social-icon:hover { background-color: rgba(255, 255, 255, 0.2); }
+        .social-icon svg { width: 24px; height: 24px; }
+        
+        /* Splash Screen Card Styles */
+        .e-card {
+            background: transparent;
+            box-shadow: 0px 8px 28px -9px rgba(0,0,0,0.45);
+            position: relative;
+            width: 280px;
+            height: 380px;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .wave {
+            position: absolute;
+            width: 540px;
+            height: 700px;
+            opacity: 0.6;
+            left: 0;
+            top: 0;
+            margin-left: -50%;
+            margin-top: -70%;
+            background: linear-gradient(744deg,#af40ff,#5b42f3 60%,#00ddeb);
+        }
+
+        .icon {
+            width: 4em;
+            margin-top: -1em;
+            padding-bottom: 1.5em;
+        }
+
+        .infotop {
+            text-align: center;
+            font-size: 20px;
+            position: absolute;
+            top: 6em;
+            left: 0;
+            right: 0;
+            color: rgb(255, 255, 255);
+            font-weight: 600;
+            padding: 0 1em;
+        }
+
+        .app-name {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-shadow: 0px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .tagline {
+            font-size: 10px;
+            font-weight: 400;
+            position: relative;
+            top: 0.7em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.9;
+        }
+
+        .wave:nth-child(2),
+        .wave:nth-child(3) {
+            top: 210px;
+        }
+
+        .playing .wave {
+            border-radius: 40%;
+            animation: wave 3000ms infinite linear;
+        }
+
+        @keyframes wave {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* --- DASHBOARD STYLES --- */
+        #dashboard {
+            display: none;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            transition: opacity 0.5s ease-in-out;
+            align-items: flex-start; /* Align content to the top */
+            justify-content: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Font from your new design */
+            overflow-y: auto; /* Enable vertical scrolling */
+        }
+        #dashboard .container {
+            max-width: 1000px;
+            width: 100%;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        #dashboard header {
+            background: linear-gradient(90deg, #3498db, #2c3e50);
+            color: white;
+            padding: 20px 25px;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        #dashboard .brand {
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            padding: 0;
+            background: transparent;
+            backdrop-filter: none;
+        }
+        .header-right-group {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+        .profile-icon {
+            font-size: 28px;
+            color: white;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        .profile-icon:hover {
+            color: #f39c12; /* A nice highlight color */
+        }
+        #dashboard nav {
+            margin-top: 0;
+        }
+        #dashboard nav a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        #dashboard nav a:hover {
+            color: white;
+        }
+        #dashboard .hero {
+            padding: 60px 40px;
+            text-align: center;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23f8f9fa"/><path d="M0 0L100 100" stroke="%23e9ecef" stroke-width="1"/><path d="M100 0L0 100" stroke="%23e9ecef" stroke-width="1"/></svg>');
+            background-size: cover;
+        }
+        #dashboard h1 {
+            font-size: 52px;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-weight: 800;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+        }
+        #dashboard .welcome-text {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        #dashboard .hi-symbol {
+            font-size: 42px;
+            animation: wave-hand 2s infinite;
+            transform-origin: 70% 70%;
+        }
+        @keyframes wave-hand {
+            0% { transform: rotate(0deg); } 10% { transform: rotate(14deg); } 20% { transform: rotate(-8deg); } 30% { transform: rotate(14deg); } 40% { transform: rotate(-4deg); } 50% { transform: rotate(10deg); } 60% { transform: rotate(0deg); } 100% { transform: rotate(0deg); }
+        }
+        #dashboard .subheading {
+            font-size: 20px;
+            color: #7f8c8d;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            line-height: 1.6;
+        }
+        #dashboard .btn {
+            display: inline-block;
+            background: linear-gradient(90deg, #3498db, #2c3e50);
+            color: white;
+            padding: 16px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 18px;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        #dashboard .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(52, 152, 219, 0.4);
+        }
+        #dashboard .btn i { margin-left: 8px; }
+        #dashboard .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 40px 20px;
+            background: #f8f9fa;
+        }
+        #dashboard .feature {
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+        #dashboard .feature:hover {
+            transform: translateY(-5px);
+        }
+        #dashboard .feature-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(45deg, #3498db, #2c3e50);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 20px;
+            color: white;
+            font-size: 30px;
+        }
+        .streak-counter {
+            display: flex;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 8px 15px;
+            border-radius: 50px;
+            color: white;
+            font-weight: 600;
+        }
+        .streak-counter i {
+            color: #f39c12;
+            font-size: 18px;
+            margin-right: 8px;
+            animation: pulse-fire 2s infinite;
+        }
+         @keyframes pulse-fire {
+            0% { transform: scale(1); text-shadow: 0 0 5px #e74c3c, 0 0 10px #f1c40f; }
+            50% { transform: scale(1.1); text-shadow: 0 0 10px #e74c3c, 0 0 20px #f1c40f; }
+            100% { transform: scale(1); text-shadow: 0 0 5px #e74c3c, 0 0 10px #f1c40f; }
+        }
+        .streak-counter span {
+            font-size: 16px;
+        }
+        
+        /* --- ASSESSMENT PAGE STYLES --- */
+        #assessmentPage {
+            display: none; opacity: 0; width: 100%; min-height: 100vh; transition: opacity 0.5s ease-in-out; align-items: flex-start; justify-content: center; padding: 20px; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow-y: auto;
+        }
+        #assessmentPage .container {
+             max-width: 800px; width: 100%; background: white; border-radius: 12px; box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1); overflow: hidden; margin-top: 20px; margin-bottom: 20px;
+        }
+         #assessmentPage header {
+            background: #2c3e50; color: white; padding: 20px 30px; display: flex; justify-content: space-between; align-items: center;
+        }
+        #assessmentPage header h2 { font-size: 24px; }
+        .back-btn {
+            background: none; border: none; color: white; font-size: 16px; cursor: pointer; display: flex; align-items: center; gap: 8px;
+        }
+        .assessment-content { padding: 30px 40px; }
+        .progress-bar {
+            width: 100%; height: 8px; background-color: #e0e0e0; border-radius: 4px; overflow: hidden; margin-bottom: 30px;
+        }
+        .progress-bar-inner {
+            width: 33%; height: 100%; background-color: #3498db; transition: width 0.4s ease;
+        }
+        .assessment-step { display: none; }
+        .assessment-step.active { display: block; }
+        .assessment-step h3 { font-size: 22px; color: #2c3e50; margin-bottom: 10px; }
+        .assessment-step p { font-size: 16px; color: #7f8c8d; margin-bottom: 25px; }
+        .options-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 25px;
+        }
+        .option-card {
+            background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 8px; padding: 15px; text-align: center; cursor: pointer; transition: all 0.3s ease;
+        }
+        .option-card:hover {
+            transform: translateY(-3px); box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .option-card.selected {
+            background-color: #3498db; color: white; border-color: #2980b9;
+        }
+        .option-card i { font-size: 24px; margin-bottom: 10px; }
+        .assessment-navigation {
+            display: flex; justify-content: space-between; margin-top: 30px; border-top: 1px solid #e9ecef; padding-top: 20px;
+        }
+        .assessment-btn {
+             background: #3498db; color: white; padding: 12px 30px; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 16px; border: none; cursor: pointer; transition: background-color 0.3s ease;
+        }
+        .assessment-btn:hover { background: #2980b9; }
+        .assessment-btn:disabled { background: #e0e0e0; cursor: not-allowed; }
+
+        /* --- ASSESSMENT RESULTS PAGE STYLES --- */
+        #resultsPage {
+             display: none; opacity: 0; width: 100%; min-height: 100vh; transition: opacity 0.5s ease-in-out; align-items: flex-start; justify-content: center; padding: 20px; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow-y: auto;
+        }
+        #resultsPage .container {
+            max-width: 900px; width: 100%; background: white; border-radius: 12px; box-shadow: 0 15px 30px rgba(0,0,0,0.1); overflow: hidden; margin: 20px 0;
+        }
+        #resultsPage header {
+             background: #2c3e50; color: white; padding: 20px 30px; display: flex; justify-content: space-between; align-items: center;
+        }
+        .results-content { padding: 30px 40px; }
+        .summary-section {
+             background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 8px; padding: 25px; margin-bottom: 30px;
+        }
+        .summary-section h3 { text-align: center; margin-bottom: 20px; }
+        .summary-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+        .summary-list h4 { font-size: 16px; color: #34495e; margin-bottom: 10px; }
+        .summary-list span { background: #e9ecef; color: #34495e; padding: 5px 10px; border-radius: 5px; font-size: 14px; margin: 0 5px 5px 0; display: inline-block; }
+        .generate-btn-container { text-align: center; margin: 20px 0; }
+        #careerIdeasContainer {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;
+        }
+        .career-idea-card {
+            background: white; border: 2px solid #e0e0e0; border-radius: 8px; padding: 20px; cursor: pointer; transition: all 0.3s ease;
+        }
+        .career-idea-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+        .career-idea-card.selected {
+            border-color: #3498db;
+            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.3);
+        }
+        .career-idea-card h4 { margin-bottom: 10px; color: #3498db; }
+        #startLearningBtnContainer {
+            text-align: center;
+            margin-top: 30px;
+            display: none; /* Hidden by default */
+        }
+
+        /* --- PERSONALIZED PATHS PAGE STYLES --- */
+        #pathsPage {
+            display: none; opacity: 0; width: 100%; min-height: 100vh; transition: opacity 0.5s ease-in-out; align-items: flex-start; justify-content: center; padding: 20px; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow-y: auto;
+        }
+        #pathsPage .container {
+            max-width: 900px; width: 100%; background: white; border-radius: 12px; box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1); overflow: hidden; margin-top: 20px; margin-bottom: 20px;
+        }
+        #pathsPage header {
+             background: #2c3e50; color: white; padding: 20px 30px; display: flex; justify-content: space-between; align-items: center;
+        }
+        #pathsPage header h2 { font-size: 24px; }
+        .path-content { padding: 30px 40px; }
+        .skills-gap-section {
+            background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 8px; padding: 25px; margin-bottom: 30px;
+        }
+        .skills-gap-section h3 {
+            text-align: center; font-size: 20px; color: #2c3e50; margin-bottom: 20px;
+        }
+        .skills-columns { display: flex; justify-content: space-around; gap: 20px; }
+        .skills-list { flex: 1; }
+        .skills-list h4 { font-size: 16px; margin-bottom: 10px; color: #34495e; border-bottom: 2px solid #3498db; padding-bottom: 5px;}
+        .skills-list ul { list-style: none; padding: 0; }
+        .skills-list li {
+            background: #ecf0f1; border-radius: 5px; padding: 8px 12px; margin-bottom: 8px; font-size: 15px; display: flex; align-items: center; gap: 8px;
+        }
+        .skills-list .have { color: #27ae60; }
+        .skills-list .need { color: #e74c3c; }
+        .timeline {
+            position: relative; padding: 20px 0;
+        }
+        .timeline::before {
+            content: ''; position: absolute; left: 20px; top: 0; bottom: 0; width: 4px; background: #e0e0e0;
+        }
+        .timeline-item {
+            position: relative; margin-bottom: 30px;
+        }
+        .timeline-item:last-child { margin-bottom: 0; }
+        .timeline-dot {
+            position: absolute; left: 0; top: 0; width: 40px; height: 40px; background: #3498db; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: white; font-size: 18px; border: 4px solid white; box-shadow: 0 0 0 4px #3498db;
+        }
+        .timeline-item.completed .timeline-dot {
+            background: #27ae60; box-shadow: 0 0 0 4px #27ae60;
+        }
+        .timeline-content {
+            margin-left: 70px; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+         .timeline-content h4 {
+            font-size: 18px; color: #2c3e50; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;
+        }
+        .timeline-content p {
+            font-size: 15px; color: #7f8c8d; line-height: 1.6;
+        }
+        .complete-btn {
+            background: #95a5a6; color: white; padding: 6px 12px; border-radius: 20px; font-size: 12px; border: none; cursor: pointer;
+        }
+        .timeline-item.completed .complete-btn {
+            background: #27ae60;
+        }
+        .resources-section {
+            margin-top: 20px; padding-top: 15px; border-top: 1px solid #f0f0f0;
+        }
+        .resources-section h5 {
+            font-size: 16px; color: #34495e; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;
+        }
+        .resources-section ul { list-style: none; padding: 0; }
+        .resources-section li { margin-bottom: 8px; }
+        .resources-section a {
+            color: #3498db; text-decoration: none; font-size: 14px; display: flex; align-items: center; gap: 8px; transition: color 0.3s ease;
+        }
+        .resources-section a:hover { color: #2980b9; }
+        .resources-section a i { color: #95a5a6; }
+
+        /* --- INTERVIEW PREP PAGE STYLES --- */
+        #interviewPage {
+            display: none; opacity: 0; width: 100%; min-height: 100vh; transition: opacity 0.5s ease-in-out; align-items: flex-start; justify-content: center; padding: 20px; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow-y: auto;
+        }
+        #interviewPage .container {
+            max-width: 900px; width: 100%; background: white; border-radius: 12px; box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1); overflow: hidden; margin-top: 20px; margin-bottom: 20px;
+        }
+         #interviewPage header {
+             background: #2c3e50; color: white; padding: 20px 30px; display: flex; justify-content: space-between; align-items: center;
+        }
+        #interviewPage header h2 { font-size: 24px; }
+        .interview-content { padding: 30px 40px; }
+        .interview-content h3 {
+            font-size: 20px; color: #2c3e50; margin-bottom: 20px; text-align: center;
+        }
+        .faq-item {
+            background: #fff;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+        .faq-question {
+            padding: 15px 20px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #34495e;
+        }
+        .faq-question::after {
+            content: '\f078'; /* Font Awesome chevron-down */
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            transition: transform 0.3s ease;
+        }
+        .faq-item.active .faq-question::after {
+            transform: rotate(180deg);
+        }
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            padding: 0 20px;
+            line-height: 1.6;
+            color: #7f8c8d;
+        }
+        /* NEW: Interview answer feedback styles */
+        .answer-feedback-container {
+            padding: 0 20px 15px 20px;
+        }
+        .answer-feedback-container textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 15px;
+            margin-bottom: 10px;
+        }
+         .answer-feedback-container button {
+            background: #3498db;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .feedback-result {
+            margin-top: 15px;
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            padding: 15px;
+            font-size: 14px;
+        }
+
+        /* --- RE-DESIGNED LEARNING RESOURCES PAGE STYLES --- */
+        #resourcesPage {
+            display: none; opacity: 0; width: 100%; min-height: 100vh; transition: opacity 0.5s ease-in-out; align-items: flex-start; justify-content: center; padding: 20px; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow-y: auto;
+        }
+        #resourcesPage .container {
+            max-width: 1200px; width: 100%; background: transparent; border: none; box-shadow: none; margin-top: 20px; margin-bottom: 20px;
+        }
+        #resourcesPage header {
+             background: #fff; color: #2c3e50; padding: 20px 30px; display: flex; justify-content: space-between; align-items: center; border-radius: 12px; box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        }
+        /* --- FIX: Make back button visible on white header --- */
+        #resourcesPage .back-btn {
+            color: #2c3e50;
+        }
+        #resourcesPage header h2 { font-size: 24px; }
+        .resources-content {
+            display: grid;
+            grid-template-columns: 2.5fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        .resources-main {
+            background-color: transparent;
+        }
+        .resources-sidebar {
+            background-color: transparent;
+        }
+        .filter-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+        .filter-tab {
+            background: white; border: 1px solid #e0e0e0; border-radius: 50px; padding: 8px 18px; font-size: 14px; cursor: pointer; transition: all 0.3s ease;
+        }
+        .filter-tab:hover { background-color: #f0f0f0; }
+        .filter-tab.active {
+            background-color: #2c3e50; color: white; border-color: #2c3e50;
+        }
+        .resource-list .resource-card {
+            background: #fff;
+            margin-bottom: 20px;
+            flex-direction: row;
+            border-radius: 12px; 
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            overflow: hidden;
+            display: flex;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+         .resource-list .resource-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+        }
+        .resource-card-icon {
+            flex-shrink: 0;
+            width: 80px;
+            background: linear-gradient(45deg, #3498db, #2c3e50);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 30px;
+        }
+         .resource-card-content {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .resource-card-content h3 { font-size: 18px; margin-bottom: 5px; color: #2c3e50; }
+        .resource-card-content p { font-size: 14px; color: #7f8c8d; margin-bottom: 15px; flex-grow: 1;}
+        .resource-progress {
+            height: 6px; background-color: #e0e0e0; border-radius: 3px; overflow: hidden;
+        }
+        .resource-progress-inner {
+            height: 100%; background: #27ae60;
+        }
+        .sidebar-widget {
+            background: white; border-radius: 12px; padding: 20px; box-shadow: 0 8px 25px rgba(0,0,0,0.08); margin-bottom: 25px;
+        }
+        .sidebar-widget h3 {
+            font-size: 18px; color: #2c3e50; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #f0f0f0;
+        }
+        .sidebar-widget ul {
+            list-style: none; padding: 0;
+        }
+         .sidebar-widget li a {
+            text-decoration: none;
+            color: #34495e;
+            font-size: 15px;
+            padding: 10px;
+            display: block;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+        .sidebar-widget li a:hover {
+            background-color: #f8f9fa;
+        }
+        .sidebar-widget li a i {
+            margin-right: 10px;
+            color: #3498db;
+        }
+        .resource-action-btn {
+            align-self: flex-start;
+            background: #3498db;
+            color: white !important;
+            padding: 8px 15px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+            margin-top: auto;
+        }
+        .resource-action-btn:hover {
+            background: #2980b9;
+        }
+        .resource-card-content .resource-progress {
+            margin-top: 15px;
+        }
+
+        /* --- GENERIC PAGE STYLES (for Resume & Cover Letter) --- */
+        .page-container {
+            display: none; opacity: 0; flex-direction: column; width: 100%; height: 100%; transition: opacity 0.5s ease-in-out; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .page-container header {
+             background: #2c3e50; color: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .page-container header .back-btn { color: white; } /* Ensure back button is visible */
+        .page-container header h2 { font-size: 22px; margin: 0; }
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 15px;
+            box-sizing: border-box;
+        }
+        .form-textarea { min-height: 100px; resize: vertical; }
+        
+        /* --- RESUME BUILDER PAGE STYLES --- */
+        .resume-builder-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 20px;
+            flex-grow: 1;
+            overflow-y: auto;
+            align-items: center;
+        }
+        .resume-input-container {
+            width: 100%;
+            max-width: 800px;
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        .resume-input-container h3 {
+            margin-top: 0;
+            text-align: center;
+        }
+        #resumeInputText {
+            min-height: 200px;
+            resize: vertical;
+        }
+        .resume-preview-container {
+            width: 100%;
+            max-width: 800px;
+            overflow-y: auto;
+        }
+        .resume-preview {
+            line-height: 1.6;
+            border: 1px solid #d1d5db; /* A professional, light grey border */
+            padding: 30px; /* Add padding to act as margins */
+            background: white; /* Ensure background is white for PDF */
+            border-radius: 8px; /* Keep the rounded corners */
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05); /* Keep the shadow */
+            margin: 20px 0; /* Add some margin for spacing within the container */
+        }
+        .resume-preview h1 { font-size: 28px; margin: 0; color: #2c3e50; }
+        .resume-preview p { margin: 5px 0; color: #555;}
+        .resume-preview .preview-contact { font-size: 14px; color: #7f8c8d; }
+        .resume-preview hr { border: 0; border-top: 1px solid #e0e0e0; margin: 15px 0; }
+        .resume-preview h3 { font-size: 18px; color: #3498db; margin: 15px 0 5px 0; border-bottom: 2px solid #f0f0f0; padding-bottom: 5px;}
+        .resume-preview h4 { margin: 10px 0 2px 0; }
+        .resume-preview ul { padding-left: 20px; margin: 5px 0; }
+
+        /* --- COVER LETTER PAGE STYLES --- */
+        .cover-letter-content {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            flex-grow: 1;
+            overflow-y: auto;
+            gap: 20px;
+        }
+        #coverLetterForm {
+            background: white; padding: 25px; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+         #coverLetterForm h3 {
+            margin-top: 0; margin-bottom: 15px; color: #2c3e50;
+        }
+        #generatedCoverLetterContainer {
+             background: white; padding: 25px; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); flex-grow: 1;
+        }
+        #generatedCoverLetter {
+            width: 100%;
+            height: 100%;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            padding: 15px;
+            font-family: 'Georgia', serif;
+            font-size: 16px;
+            line-height: 1.7;
+            box-sizing: border-box;
+        }
+        
+        /* --- SKILL TREE PAGE STYLES --- */
+        #skillTreePage {
+            display: none; opacity: 0; width: 100%; min-height: 100vh; transition: opacity 0.5s ease-in-out; align-items: flex-start; justify-content: center; padding: 20px; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow-y: auto;
+        }
+        #skillTreePage .container {
+            max-width: 1000px; width: 100%; background: white; border-radius: 12px; box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1); overflow: hidden; margin-top: 20px; margin-bottom: 20px;
+        }
+        #skillTreePage header {
+             background: #2c3e50; color: white; padding: 20px 30px; display: flex; justify-content: space-between; align-items: center;
+        }
+        .skill-tree-content { padding: 30px 40px; }
+        .skill-tree-container {
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            position: relative;
+        }
+        .skill-branch {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 60px; /* Space between nodes in a branch */
+            position: relative;
+        }
+        .skill-branch h3 {
+             background: #34495e; color: white; padding: 5px 15px; border-radius: 5px; margin-bottom: 30px;
+        }
+        .skill-node {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 4px solid;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+        .skill-node span { font-size: 12px; font-weight: 600; margin-top: 5px; }
+        .skill-node i { font-size: 24px; }
+        /* Connecting Lines */
+        .skill-node:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 60px; /* Same as gap */
+            background: #bdc3c7;
+            z-index: 1;
+        }
+        .skill-branch.completed .skill-node:not(:last-child)::after { background: #27ae60; }
+        /* Node States */
+        .skill-node.locked {
+            background-color: #ecf0f1;
+            border-color: #bdc3c7;
+            color: #95a5a6;
+        }
+        .skill-node.unlocked {
+            background-color: #e9f5ff;
+            border-color: #3498db;
+            color: #2980b9;
+            cursor: pointer;
+        }
+        .skill-node.unlocked:hover {
+             transform: scale(1.1);
+             box-shadow: 0 0 15px rgba(52, 152, 219, 0.4);
+        }
+        .skill-node.completed {
+             background-color: #e4f8f0;
+             border-color: #27ae60;
+             color: #16a085;
+        }
+
+        /* --- PROFILE PAGE STYLES --- */
+        #profilePage {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 20px;
+            box-sizing: border-box;
+            width: 100%;
+        }
+        .profile-content {
+            width: 100%;
+            max-width: 600px;
+            margin-top: 20px;
+        }
+        .profile-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            padding: 30px;
+            text-align: center;
+        }
+        .profile-header {
+            margin-bottom: 25px;
+        }
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #3498db, #2c3e50);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 15px;
+            color: white;
+            font-size: 50px;
+        }
+        .profile-header h3 {
+            margin: 0;
+            font-size: 24px;
+            color: #2c3e50;
+        }
+        .profile-header p {
+            margin: 5px 0 0;
+            font-size: 16px;
+            color: #7f8c8d;
+        }
+        .profile-stats {
+            display: flex;
+            justify-content: space-around;
+            padding: 20px 0;
+            border-top: 1px solid #f0f0f0;
+            border-bottom: 1px solid #f0f0f0;
+            margin-bottom: 25px;
+        }
+        .stat-item {
+            flex: 1;
+        }
+        .stat-item i {
+            font-size: 20px;
+            color: #3498db;
+            margin-bottom: 8px;
+        }
+        .stat-item span {
+            display: block;
+            font-size: 22px;
+            font-weight: 700;
+            color: #34495e;
+        }
+        .stat-item p {
+            margin: 0;
+            font-size: 14px;
+            color: #95a5a6;
+        }
+        .profile-assessment-summary h4 {
+            color: #2c3e50;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+        #profileAssessmentDetails .summary-list {
+            text-align: left;
+            margin-bottom: 10px;
+        }
+        #profileAssessmentDetails .summary-list h5 {
+            font-size: 15px;
+            color: #34495e;
+            margin-bottom: 8px;
+        }
+         #profileAssessmentDetails .summary-list span {
+            background: #e9ecef;
+            color: #34495e;
+            padding: 4px 8px;
+            border-radius: 5px;
+            font-size: 13px;
+            margin: 0 4px 4px 0;
+            display: inline-block;
+        }
+
+
+        /* --- PROJECT VALIDATION MODAL STYLES --- */
+        #projectModal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 1000;
+        }
+        .project-modal-content {
+            background: white; padding: 30px; border-radius: 12px; max-width: 500px; width: 90%; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .project-modal-content h3 { margin-top: 0; color: #2c3e50; }
+        .project-modal-content p { color: #7f8c8d; }
+        .project-modal-content .form-textarea { min-height: 120px; }
+        .project-modal-buttons {
+            display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;
+        }
+
+        /* --- OTP MODAL STYLES --- */
+        #otpModal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: none; justify-content: center; align-items: center; z-index: 2000;
+        }
+        .otp-modal-content {
+            background: #fff; padding: 30px; border-radius: 12px; max-width: 400px; width: 90%; box-shadow: 0 10px 30px rgba(0,0,0,0.2); text-align: center; color: #2c3e50; position: relative;
+        }
+        .otp-modal-content .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            color: #95a5a6;
+            cursor: pointer;
+            border: none;
+            background: none;
+        }
+        .otp-modal-content h3 {
+            margin-top: 0;
+        }
+        .otp-modal-content p {
+            color: #7f8c8d;
+            font-size: 15px;
+            margin-bottom: 20px;
+        }
+        #otp-input-container {
+            display: none;
+        }
+        #otpMessage {
+            margin-top: 15px;
+            font-size: 14px;
+            min-height: 20px;
+        }
+
+
+        /* --- LOADING MODAL STYLES --- */
+        #loadingModal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            display: none; /* Initially hidden */
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .loader {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #3498db;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* --- NOTIFICATION MODAL STYLES --- */
+        #notificationModal {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 500px;
+            background: #2c3e50;
+            color: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            padding: 20px;
+            display: none; /* Hidden by default */
+            align-items: center;
+            justify-content: space-between;
+            z-index: 1001;
+            gap: 15px;
+        }
+        #notificationModal p {
+            margin: 0;
+            flex-grow: 1;
+        }
+        #notificationModal button {
+            background: #3498db;
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+         #notificationModal button.dismiss {
+            background: #7f8c8d;
+        }
+
+        /* Media Query for responsiveness */
+        @media (max-width: 992px) {
+            .resources-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        @media (max-width: 768px) {
+            #loginPage {
+                grid-template-columns: 1fr; 
+            }
+             .login-card { 
+                justify-self: center;
+                grid-column: 1 / -1; /* Ensure it spans all columns on small screens */
+             }
+            #dashboard .features {
+                 grid-template-columns: 1fr;
+            }
+            #dashboard h1 { font-size: 40px; }
+            #dashboard .welcome-text { flex-direction: column; gap: 10px; }
+            #dashboard .hero { padding: 40px 20px; }
+            #dashboard .brand { font-size: 28px; }
+            .skills-columns { flex-direction: column; }
+            .summary-grid { grid-template-columns: 1fr; }
+            .resource-list .resource-card {
+                flex-direction: column;
+            }
+            .resource-card-icon { 
+                width: 100%;
+                height: 60px;
+            }
+            #notificationModal {
+                flex-direction: column;
+                text-align: center;
+            }
+            .skill-tree-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+            .skill-branch {
+                flex-direction: row;
+                gap: 30px;
+                justify-content: center;
+                width: 100%;
+                overflow-x: auto;
+                padding-bottom: 20px;
+            }
+             .skill-branch h3 { display: none; }
+             .skill-node:not(:last-child)::after {
+                width: 30px;
+                height: 4px;
+                top: 50%;
+                left: 100%;
+                transform: translateY(-50%);
+            }
+             #profilePage .container {
+                padding: 15px;
+            }
+            .profile-content {
+                 padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="splashScreen">
+        <div class="e-card playing">
+            <div class="wave"></div><div class="wave"></div><div class="wave"></div>
+            <div class="infotop">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="icon"><path d="M19.4133 4.89862L14.5863 2.17544C12.9911 1.27485 11.0089 1.27485 9.41368 2.17544L4.58674 4.89862C2.99153 5.7992 2 7.47596 2 9.2763V14.7235C2 16.5238 2.99153 18.2014 4.58674 19.1012L9.41368 21.8252C10.2079 22.2734 11.105 22.5 12.0046 22.5C12.6952 22.5 13.3874 22.3657 14.0349 22.0954C14.2204 22.018 14.4059 21.9273 14.5872 21.8252L19.4141 19.1012C19.9765 18.7831 20.4655 18.3728 20.8651 17.8825C21.597 16.9894 22 15.8671 22 14.7243V9.27713C22 7.47678 21.0085 5.7992 19.4133 4.89862ZM4.10784 14.7235V9.2763C4.10784 8.20928 4.6955 7.21559 5.64066 6.68166L10.4676 3.95848C10.9398 3.69152 11.4701 3.55804 11.9996 3.55804C12.5291 3.55804 13.0594 3.69152 13.5324 3.95848L18.3593 6.68166C19.3045 7.21476 19.8922 8.20928 19.8922 9.2763V9.75997C19.1426 9.60836 18.377 9.53091 17.6022 9.53091C14.7929 9.53091 12.1041 10.5501 10.0309 12.3999C8.36735 13.8847 7.21142 15.8012 6.68783 17.9081L5.63981 17.3165C4.69466 16.7834 4.10699 15.7897 4.10699 14.7235H4.10784ZM10.4676 20.0413L8.60933 18.9924C8.94996 17.0479 9.94402 15.2665 11.4515 13.921C13.1353 12.4181 15.3198 11.5908 17.6022 11.5908C18.3804 11.5908 19.1477 11.6864 19.8922 11.8742V14.7235C19.8922 15.2278 19.7589 15.7254 19.5119 16.1662C18.7615 15.3596 17.6806 14.8528 16.4783 14.8528C14.2136 14.8528 12.3781 16.6466 12.3781 18.8598C12.3781 19.3937 12.4861 19.9021 12.68 20.3676C11.9347 20.5316 11.1396 20.4203 10.4684 20.0413H10.4676Z"></path></svg>
+                <div class="app-name">CAREER CRAFT</div>
+                <div class="tagline">WHERE CAREERS ARE CRAFTED, NOT CHOSEN.</div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="loginPage">
+        <div class="login-card">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="icon"><path d="M19.4133 4.89862L14.5863 2.17544C12.9911 1.27485 11.0089 1.27485 9.41368 2.17544L4.58674 4.89862C2.99153 5.7992 2 7.47596 2 9.2763V14.7235C2 16.5238 2.99153 18.2014 4.58674 19.1012L9.41368 21.8252C10.2079 22.2734 11.105 22.5 12.0046 22.5C12.6952 22.5 13.3874 22.3657 14.0349 22.0954C14.2204 22.018 14.4059 21.9273 14.5872 21.8252L19.4141 19.1012C19.9765 18.7831 20.4655 18.3728 20.8651 17.8825C21.597 16.9894 22 15.8671 22 14.7243V9.27713C22 7.47678 21.0085 5.7992 19.4133 4.89862ZM4.10784 14.7235V9.2763C4.10784 8.20928 4.6955 7.21559 5.64066 6.68166L10.4676 3.95848C10.9398 3.69152 11.4701 3.55804 11.9996 3.55804C12.5291 3.55804 13.0594 3.69152 13.5324 3.95848L18.3593 6.68166C19.3045 7.21476 19.8922 8.20928 19.8922 9.2763V9.75997C19.1426 9.60836 18.377 9.53091 17.6022 9.53091C14.7929 9.53091 12.1041 10.5501 10.0309 12.3999C8.36735 13.8847 7.21142 15.8012 6.68783 17.9081L5.63981 17.3165C4.69466 16.7834 4.10699 15.7897 4.10699 14.7235H4.10784ZM10.4676 20.0413L8.60933 18.9924C8.94996 17.0479 9.94402 15.2665 11.4515 13.921C13.1353 12.4181 15.3198 11.5908 17.6022 11.5908C18.3804 11.5908 19.1477 11.6864 19.8922 11.8742V14.7235C19.8922 15.2278 19.7589 15.7254 19.5119 16.1662C18.7615 15.3596 17.6806 14.8528 16.4783 14.8528C14.2136 14.8528 12.3781 16.6466 12.3781 18.8598C12.3781 19.3937 12.4861 19.9021 12.68 20.3676C11.9347 20.5316 11.1396 20.4203 10.4684 20.0413H10.4676Z"></path></svg>
+            <form id="loginForm">
+                <div class="input-group">
+                    <input type="email" id="email" placeholder="Email">
+                </div>
+                <div class="input-group">
+                    <input type="password" id="password" placeholder="Password">
+                </div>
+                <div class="login-options">
+                    <label class="remember-me"><input type="checkbox" id="rememberMe"> Remember Me</label>
+                    <a href="#" class="forgot-password">Forgot Password?</a>
+                </div>
+                <button type="submit" class="signin-btn">Sign In</button>
+            </form>
+            <div class="divider">or continue with</div>
+            <div class="social-login">
+                 <div class="social-icon" id="googleSignIn">
+                    <svg fill="#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"></path><path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"></path><path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.222,0-9.519-3.487-11.187-8.164l-6.522,5.025C9.505,39.556,16.227,44,24,44z"></path><path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.574l6.19,5.238C44.437,36.218,48,30.651,48,24C48,22.659,47.862,21.35,47.611,20.083z"></path></svg>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="dashboard">
+        <div class="container">
+            <header>
+                <div class="brand">Career Craft</div>
+                <div class="header-right-group">
+                    <div class="streak-counter">
+                        <i class="fas fa-fire"></i>
+                        <span id="streakCount">0</span>
+                    </div>
+                    <nav>
+                        <a href="#">Home</a>
+                        <a href="#" id="logoutButton">Logout</a>
+                    </nav>
+                    <div class="profile-icon">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                </div>
+            </header>
+            <section class="hero">
+                <h1>
+                    <div class="welcome-text">
+                        <span>Welcome!</span>
+                        <span class="hi-symbol">👋</span>
+                    </div>
+                </h1>
+                <p class="subheading">Build your future with tailored career paths and professional development resources</p>
+                <button class="btn" id="viewPathsBtnHero">View Paths <i class="fas fa-arrow-right"></i></button>
+            </section>
+            <section class="features">
+                <div class="feature" id="careerAssessmentBtn"><div class="feature-icon">📊</div><h3>Career Assessment</h3><p>Discover your strengths and interests with our comprehensive assessment tools.</p></div>
+                <div class="feature" id="personalizedPathsBtn"><div class="feature-icon">🎯</div><h3>Personalized Paths</h3><p>Get customized career roadmaps based on your goals and skills.</p></div>
+                <div class="feature" id="skillTreeBtn"><div class="feature-icon"><i class="fas fa-sitemap"></i></div><h3>Skill Tree</h3><p>Visually track and validate your skills through project-based learning.</p></div>
+                <div class="feature" id="learningResourcesBtn"><div class="feature-icon">📚</div><h3>Learning Resources</h3><p>Access courses, tutorials, and materials to develop your professional skills.</p></div>
+                <div class="feature" id="interviewPrepBtn"><div class="feature-icon"><i class="fas fa-microphone-alt"></i></div><h3>Interview Prep</h3><p>Practice with AI-powered questions and get feedback on your answers.</p></div>
+                <div class="feature" id="resumeBuilderBtn"><div class="feature-icon"><i class="fas fa-file-alt"></i></div><h3>Resume Builder</h3><p>Craft a professional resume with AI assistance.</p></div>
+                <div class="feature" id="coverLetterBtn"><div class="feature-icon"><i class="fas fa-envelope-open-text"></i></div><h3>Cover Letter Writer</h3><p>Generate a tailored cover letter for any job application.</p></div>
+            </section>
+        </div>
+    </div>
+
+    <!-- ASSESSMENT PAGE -->
+    <div id="assessmentPage">
+         <div class="container">
+            <header>
+                <h2>Career Assessment</h2>
+                <button class="back-btn" id="backToDashboardBtn"><i class="fas fa-arrow-left"></i> Back to Dashboard</button>
+            </header>
+            <div class="assessment-content">
+                <div class="progress-bar">
+                    <div class="progress-bar-inner"></div>
+                </div>
+                <!-- Step 1: Interests -->
+                <div class="assessment-step active" data-step="1">
+                    <h3>Step 1: Your Interests</h3><p>What kind of activities do you enjoy? Select all that apply.</p>
+                    <div class="options-grid">
+                        <div class="option-card" data-value="technology"><i class="fas fa-laptop-code"></i><span>Technology</span></div>
+                        <div class="option-card" data-value="creative"><i class="fas fa-paint-brush"></i><span>Creative Arts</span></div>
+                        <div class="option-card" data-value="business"><i class="fas fa-briefcase"></i><span>Business</span></div>
+                        <div class="option-card" data-value="healthcare"><i class="fas fa-heartbeat"></i><span>Healthcare</span></div>
+                        <div class="option-card" data-value="education"><i class="fas fa-book"></i><span>Education</span></div>
+                        <div class="option-card" data-value="outdoors"><i class="fas fa-tree"></i><span>Outdoors</span></div>
+                    </div>
+                    <div class="assessment-navigation"><button class="assessment-btn next" disabled>Next <i class="fas fa-arrow-right"></i></button></div>
+                </div>
+                <!-- Step 2: Skills -->
+                <div class="assessment-step" data-step="2">
+                    <h3>Step 2: Your Skills</h3><p>What are you good at? Identify your strongest skills.</p>
+                     <div class="options-grid">
+                        <div class="option-card" data-value="communication"><i class="fas fa-comments"></i><span>Communication</span></div>
+                        <div class="option-card" data-value="problem-solving"><i class="fas fa-lightbulb"></i><span>Problem-Solving</span></div>
+                        <div class="option-card" data-value="leadership"><i class="fas fa-users"></i><span>Leadership</span></div>
+                        <div class="option-card" data-value="analytical"><i class="fas fa-chart-line"></i><span>Analytical</span></div>
+                        <div class="option-card" data-value="technical"><i class="fas fa-cogs"></i><span>Technical</span></div>
+                        <div class="option-card" data-value="creative-thinking"><i class="fas fa-brain"></i><span>Creative Thinking</span></div>
+                    </div>
+                    <div class="assessment-navigation"><button class="assessment-btn prev"><i class="fas fa-arrow-left"></i> Previous</button><button class="assessment-btn next" disabled>Next <i class="fas fa-arrow-right"></i></button></div>
+                </div>
+                <!-- Step 3: Values -->
+                <div class="assessment-step" data-step="3">
+                    <h3>Step 3: Your Work Values</h3><p>What's most important to you in a job?</p>
+                     <div class="options-grid">
+                        <div class="option-card" data-value="work-life-balance"><i class="fas fa-balance-scale"></i><span>Work-Life Balance</span></div>
+                        <div class="option-card" data-value="salary"><i class="fas fa-dollar-sign"></i><span>High Salary</span></div>
+                        <div class="option-card" data-value="impact"><i class="fas fa-globe"></i><span>Making an Impact</span></div>
+                        <div class="option-card" data-value="autonomy"><i class="fas fa-user-check"></i><span>Autonomy</span></div>
+                        <div class="option-card" data-value="stability"><i class="fas fa-shield-alt"></i><span>Job Stability</span></div>
+                        <div class="option-card" data-value="growth"><i class="fas fa-level-up-alt"></i><span>Growth Opportunity</span></div>
+                    </div>
+                    <div class="assessment-navigation"><button class="assessment-btn prev"><i class="fas fa-arrow-left"></i> Previous</button><button class="assessment-btn" id="finishAssessmentBtn" disabled>Finish Assessment</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ASSESSMENT RESULTS PAGE -->
+    <div id="resultsPage">
+        <div class="container">
+             <header>
+                <h2>Assessment Results</h2>
+                <button class="back-btn" id="backToAssessmentBtn"><i class="fas fa-arrow-left"></i> Redo Assessment</button>
+            </header>
+            <div class="results-content">
+                <section class="summary-section">
+                    <h3>Your Profile Summary</h3>
+                    <div class="summary-grid">
+                        <div class="summary-list" id="interestsSummary"><h4>Interests</h4></div>
+                        <div class="summary-list" id="skillsSummary"><h4>Skills</h4></div>
+                        <div class="summary-list" id="valuesSummary"><h4>Values</h4></div>
+                    </div>
+                </section>
+                <div class="generate-btn-container">
+                    <button class="assessment-btn" id="generateIdeasBtn">✨ Generate Career Ideas</button>
+                </div>
+                <div id="careerIdeasContainer">
+                    <!-- AI-Generated Career cards will be injected here -->
+                </div>
+                 <div id="startLearningBtnContainer">
+                    <button class="assessment-btn" id="startLearningBtn">Start Learning Path</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PERSONALIZED PATHS PAGE -->
+    <div id="pathsPage">
+        <div class="container">
+            <header>
+                <h2>Your Personalized Path</h2>
+                <button class="back-btn" id="backToDashboardBtn2"><i class="fas fa-arrow-left"></i> Back to Dashboard</button>
+            </header>
+            <div class="path-content">
+                <section class="skills-gap-section" id="pathSkillsGap">
+                    <!-- AI-Generated Skills Gap will be injected here -->
+                </section>
+                
+                <section class="career-roadmap">
+                    <div class="timeline" id="pathTimeline">
+                        <!-- AI-Generated Timeline will be injected here -->
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+     <!-- INTERVIEW PREP PAGE -->
+    <div id="interviewPage">
+        <div class="container">
+            <header>
+                <h2>Interview Prep</h2>
+                <button class="back-btn" id="backToDashboardBtn4"><i class="fas fa-arrow-left"></i> Back to Dashboard</button>
+            </header>
+            <div class="interview-content">
+                <h3 id="interviewTitle">Common Interview Questions</h3>
+                <div class="faq-accordion" id="faqAccordion">
+                     <!-- AI-Generated questions will go here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- RE-DESIGNED LEARNING RESOURCES PAGE -->
+    <div id="resourcesPage">
+        <div class="container">
+            <header>
+                 <h2>Your Learning Hub</h2>
+                <button class="back-btn" id="backToDashboardBtn3"><i class="fas fa-arrow-left"></i> Back to Dashboard</button>
+            </header>
+            <div class="resources-content">
+                <div class="resources-main">
+                    <div class="filter-tabs">
+                        <button class="filter-tab active" data-filter="all">All</button>
+                        <button class="filter-tab" data-filter="course">Courses</button>
+                        <button class="filter-tab" data-filter="book">Books</button>
+                        <button class="filter-tab" data-filter="video">Videos</button>
+                    </div>
+                    <div class="resource-list">
+                        <!-- Resource Card 1 -->
+                        <div class="resource-card" data-category="course">
+                            <div class="resource-card-icon"><i class="fas fa-graduation-cap"></i></div>
+                            <div class="resource-card-content">
+                                <h3>Python for Everybody</h3>
+                                <p>A comprehensive course by University of Michigan covering all basics.</p>
+                                <a href="https://www.py4e.com/lessons" target="_blank" class="resource-action-btn">Start Learning</a>
+                                <div class="resource-progress"><div class="resource-progress-inner" style="width: 60%;"></div></div>
+                            </div>
+                        </div>
+                         <!-- Resource Card 2 -->
+                        <div class="resource-card" data-category="course">
+                            <div class="resource-card-icon"><i class="fas fa-server"></i></div>
+                            <div class="resource-card-content">
+                                <h3>SQL for Data Science</h3>
+                                <p>Learn SQL from scratch for data analysis from University of California, Davis.</p>
+                                <a href="https://www.coursera.org/learn/sql-for-data-science" target="_blank" class="resource-action-btn">Start Learning</a>
+                                <div class="resource-progress"><div class="resource-progress-inner" style="width: 25%;"></div></div>
+                            </div>
+                        </div>
+                         <!-- Resource Card 3 -->
+                        <div class="resource-card" data-category="book">
+                           <div class="resource-card-icon"><i class="fas fa-book"></i></div>
+                            <div class="resource-card-content">
+                                <h3>Automate the Boring Stuff with Python</h3>
+                                <p>A practical guide to Python 3 for complete beginners. (Free to Read Online)</p>
+                                <a href="https://automatetheboringstuff.com/" target="_blank" class="resource-action-btn">Read for Free</a>
+                                <div class="resource-progress"><div class="resource-progress-inner" style="width: 0%;"></div></div>
+                            </div>
+                        </div>
+                         <!-- Resource Card 4 -->
+                        <div class="resource-card" data-category="video">
+                           <div class="resource-card-icon"><i class="fab fa-youtube"></i></div>
+                            <div class="resource-card-content">
+                                <h3>Tableau Full Course</h3>
+                                <p>An 11-hour deep dive into data visualization with Tableau by Simplilearn.</p>
+                                <a href="https://www.youtube.com/watch?v=aHaUiK4gImQ" target="_blank" class="resource-action-btn">Watch Video</a>
+                                <div class="resource-progress"><div class="resource-progress-inner" style="width: 10%;"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="resources-sidebar">
+                    <div class="sidebar-widget">
+                        <h3><i class="fas fa-rocket"></i> Quick Skill-Up</h3>
+                        <ul>
+                            <li><a href="#"><i class="fas fa-bolt"></i> 5-Minute Pandas Trick</a></li>
+                            <li><a href="#"><i class="fas fa-bolt"></i> Tableau Tip of the Day</a></li>
+                            <li><a href="#"><i class="fas fa-bolt"></i> SQL Subquery Practice</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- RESUME BUILDER PAGE -->
+    <div id="resumePage" class="page-container">
+        <header>
+            <h2>AI Resume Builder</h2>
+            <div>
+                 <button class="back-btn" id="backToDashboardBtn5"><i class="fas fa-arrow-left"></i> Back to Dashboard</button>
+            </div>
+        </header>
+        <div class="resume-builder-content">
+            <div class="resume-input-container">
+                <h3>Tell Us About Yourself</h3>
+                <textarea id="resumeInputText" class="form-textarea" placeholder="Paste your details, work experience, skills, and education here... The more detail, the better! The AI will structure it for you."></textarea>
+                <button class="assessment-btn" id="generateResumeBtn" style="width: 100%;">✨ Generate Resume with AI</button>
+            </div>
+            <div class="resume-preview-container">
+                <div class="resume-preview" id="resumePreview">
+                    <!-- This content will be replaced dynamically -->
+                    <h1>Priya Sharma</h1>
+                    <p>Software Engineer</p>
+                    <div class="preview-contact">
+                        <span>priya.sharma.dev@email.com</span> | 
+                        <span>+91 98765 43210</span> | 
+                        <span>Hyderabad, India</span>
+                    </div>
+                    <hr>
+                    <h3>Professional Summary</h3>
+                    <p>Detail-oriented and results-driven Software Engineer with over 4 years of experience in designing, developing, and deploying scalable backend services and dynamic frontend applications. Proficient in Java, Spring Boot, Python, and modern JavaScript frameworks like React. Proven ability to work in fast-paced, Agile environments and a passion for solving complex problems with clean, efficient code.</p>
+                    <hr>
+                    <h3>Work Experience</h3>
+                    <div>
+                        <h4>Software Engineer</h4>
+                        <p><em>TechSolutions Pvt. Ltd. | June 2021 - Present</em></p>
+                        <p>Developed and maintained high-traffic, microservices-based applications using Java 11+, Spring Boot, and Hibernate, resulting in a 20% improvement in API response times. Collaborated with a cross-functional team to build a responsive user interface using React and Redux, enhancing user engagement by 15%.</p>
+                    </div>
+                    <div>
+                        <h4>Associate Software Engineer</h4>
+                        <p><em>Innovatech Corp. | July 2019 - May 2021</em></p>
+                        <p>Contributed to the development of a flagship CRM product, writing clean and maintainable code in Python and Django. Participated in the full software development lifecycle (SDLC) following Agile methodologies.</p>
+                    </div>
+                    <hr>
+                    <h3>Education</h3>
+                    <div>
+                         <p><strong>Bachelor of Technology in Computer Science</strong> - Jawaharlal Nehru Technological University, Hyderabad</p>
+                    </div>
+                    <hr>
+                    <h3>Skills</h3>
+                    <p>Java, Spring Boot, Python, JavaScript, React, SQL, AWS, Docker, Git</p>
+                </div>
+            </div>
+             <div style="width: 100%; max-width: 800px; text-align: center; margin-bottom: 20px;">
+                <button class="assessment-btn" id="downloadPdfBtn"><i class="fas fa-download"></i> Download PDF</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- COVER LETTER PAGE -->
+    <div id="coverLetterPage" class="page-container">
+         <header>
+            <h2>AI Cover Letter Writer</h2>
+            <button class="back-btn" id="backToDashboardBtn6"><i class="fas fa-arrow-left"></i> Back to Dashboard</button>
+        </header>
+        <div class="cover-letter-content">
+            <form id="coverLetterForm">
+                 <h3>Job Details</h3>
+                 <input type="text" id="clJobTitle" placeholder="Job Title You're Applying For" class="form-input">
+                 <input type="text" id="clCompany" placeholder="Company Name" class="form-input">
+                 <textarea id="clJobDesc" placeholder="Paste the job description here..." class="form-textarea" style="min-height: 150px;"></textarea>
+                 <button type="button" class="assessment-btn" id="generateCoverLetterBtn" style="width: 100%;">✨ Generate Cover Letter</button>
+            </form>
+            <div id="generatedCoverLetterContainer">
+                 <textarea id="generatedCoverLetter" placeholder="Your AI-generated cover letter will appear here..."></textarea>
+            </div>
+        </div>
+    </div>
+    
+    <!-- SKILL TREE PAGE -->
+    <div id="skillTreePage">
+        <div class="container">
+            <header>
+                <h2 id="skillTreeHeader">Your Skill Tree</h2>
+                <button class="back-btn" id="backToDashboardBtn7"><i class="fas fa-arrow-left"></i> Back to Dashboard</button>
+            </header>
+            <div class="skill-tree-content">
+                <div class="skill-tree-container" id="skillTreeContainer">
+                    <!-- Skill Tree will be dynamically generated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PROFILE PAGE -->
+    <div id="profilePage" class="page-container">
+        <header>
+            <h2>Your Profile</h2>
+            <button class="back-btn" id="backToDashboardBtn8"><i class="fas fa-arrow-left"></i> Back to Dashboard</button>
+        </header>
+        <div class="profile-content">
+            <div class="profile-card">
+                <div class="profile-header">
+                    <div class="profile-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h3 id="profileName">Priya Sharma</h3>
+                    <p id="profileEmail">priya.sharma.dev@email.com</p>
+                </div>
+                <div class="profile-stats">
+                    <div class="stat-item">
+                        <i class="fas fa-fire"></i>
+                        <span id="profileStreak">0</span>
+                        <p>Day Streak</p>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-bullseye"></i>
+                        <span id="profilePath">Not Set</span>
+                        <p>Career Path</p>
+                    </div>
+                </div>
+                <div class="profile-assessment-summary">
+                    <h4>Assessment Summary</h4>
+                    <div id="profileAssessmentDetails">
+                        <p>Complete the career assessment to see your summary here.</p>
+                    </div>
+                </div>
+                 <button class="assessment-btn" id="editProfileBtn" style="width: 100%; margin-top: 20px;">Edit Profile</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- LOADING MODAL -->
+    <div id="loadingModal">
+        <div class="loader"></div>
+    </div>
+    
+    <!-- NOTIFICATION PERMISSION MODAL -->
+    <div id="notificationModal">
+        <p>Enable notifications to get daily reminders and keep your learning streak going!</p>
+        <div>
+            <button id="allowNotificationsBtn">Allow</button>
+            <button id="dismissNotificationsBtn" class="dismiss">Maybe Later</button>
+        </div>
+    </div>
+    
+    <!-- PROJECT MODAL -->
+    <div id="projectModal">
+        <div class="project-modal-content">
+            <h3 id="projectModalTitle"></h3>
+            <p id="projectModalDesc"></p>
+            <form id="projectForm">
+                 <textarea id="projectDetails" class="form-textarea" placeholder="Briefly describe your project or link to your work (e.g., GitHub, portfolio). The AI will provide feedback on your approach."></textarea>
+                 <div id="projectFeedback" class="feedback-result" style="display:none; margin-bottom: 15px;"></div>
+                 <div class="project-modal-buttons">
+                    <button type="button" class="assessment-btn prev" id="closeProjectModalBtn">Cancel</button>
+                    <button type="submit" class="assessment-btn" id="submitProjectBtn">Submit for Validation</button>
+                 </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- API KEY MODAL -->
+    <div id="apiKeyModal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: none; justify-content: center; align-items: center; z-index: 2000;">
+        <div style="background: white; padding: 30px; border-radius: 12px; max-width: 500px; width: 90%; box-shadow: 0 10px 30px rgba(0,0,0,0.2); text-align: center;">
+            <h3>Enter Your Gemini API Key</h3>
+            <p style="color: #7f8c8d; font-size: 15px;">To use the AI features, please provide your own Google Gemini API key. You can get one from <a href="https://aistudio.google.com/apikey" target="_blank" style="color: #3498db; text-decoration: none; font-weight: 600;">Google AI Studio</a>.</p>
+            <input type="password" id="apiKeyInput" placeholder="Enter your API key here" style="width: 100%; padding: 12px; margin: 15px 0; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; box-sizing: border-box;">
+            <button id="saveApiKeyBtn" class="assessment-btn">Save and Continue</button>
+            <p style="color: #95a5a6; font-size: 12px; margin-top: 15px;"><small>Your key is only used for this session and is not stored anywhere.</small></p>
+        </div>
+    </div>
+
+    <script>
+        // --- DOM Elements ---
+        const splash = document.getElementById('splashScreen');
+        const loginPage = document.getElementById('loginPage');
+        const dashboard = document.getElementById('dashboard');
+        const assessmentPage = document.getElementById('assessmentPage');
+        const resultsPage = document.getElementById('resultsPage');
+        const pathsPage = document.getElementById('pathsPage');
+        const resourcesPage = document.getElementById('resourcesPage');
+        const interviewPage = document.getElementById('interviewPage');
+        const resumePage = document.getElementById('resumePage');
+        const coverLetterPage = document.getElementById('coverLetterPage');
+        const skillTreePage = document.getElementById('skillTreePage');
+        const loadingModal = document.getElementById('loadingModal');
+        const notificationModal = document.getElementById('notificationModal');
+        const projectModal = document.getElementById('projectModal');
+        const profilePage = document.getElementById('profilePage');
+        const apiKeyModal = document.getElementById('apiKeyModal');
+        const apiKeyInput = document.getElementById('apiKeyInput');
+        const saveApiKeyBtn = document.getElementById('saveApiKeyBtn');
+        const loginForm = document.getElementById('loginForm');
+        const googleSignInButton = document.getElementById('googleSignIn');
+        const logoutButton = document.getElementById('logoutButton');
+        const profileIcon = document.querySelector('.profile-icon');
+        const careerAssessmentBtn = document.getElementById('careerAssessmentBtn');
+        const personalizedPathsBtn = document.getElementById('personalizedPathsBtn');
+        const skillTreeBtn = document.getElementById('skillTreeBtn');
+        const viewPathsBtnHero = document.getElementById('viewPathsBtnHero');
+        const learningResourcesBtn = document.getElementById('learningResourcesBtn');
+        const interviewPrepBtn = document.getElementById('interviewPrepBtn');
+        const resumeBuilderBtn = document.getElementById('resumeBuilderBtn');
+        const coverLetterBtn = document.getElementById('coverLetterBtn');
+        const backToDashboardBtn = document.getElementById('backToDashboardBtn');
+        const backToDashboardBtn2 = document.getElementById('backToDashboardBtn2');
+        const backToDashboardBtn3 = document.getElementById('backToDashboardBtn3');
+        const backToDashboardBtn4 = document.getElementById('backToDashboardBtn4');
+        const backToDashboardBtn5 = document.getElementById('backToDashboardBtn5');
+        const backToDashboardBtn6 = document.getElementById('backToDashboardBtn6');
+        const backToDashboardBtn7 = document.getElementById('backToDashboardBtn7');
+        const backToDashboardBtn8 = document.getElementById('backToDashboardBtn8');
+        const backToAssessmentBtn = document.getElementById('backToAssessmentBtn');
+        const finishAssessmentBtn = document.getElementById('finishAssessmentBtn');
+        const generateIdeasBtn = document.getElementById('generateIdeasBtn');
+        const startLearningBtnContainer = document.getElementById('startLearningBtnContainer');
+        const startLearningBtn = document.getElementById('startLearningBtn');
+        const allowNotificationsBtn = document.getElementById('allowNotificationsBtn');
+        const dismissNotificationsBtn = document.getElementById('dismissNotificationsBtn');
+        const streakCountSpan = document.getElementById('streakCount');
+        const downloadPdfBtn = document.getElementById('downloadPdfBtn');
+        const generateResumeBtn = document.getElementById('generateResumeBtn');
+        const generateCoverLetterBtn = document.getElementById('generateCoverLetterBtn');
+        const closeProjectModalBtn = document.getElementById('closeProjectModalBtn');
+        const projectForm = document.getElementById('projectForm');
+
+
+        // --- State Management ---
+        const userAssessment = { interests: [], skills: [], values: [] };
+        let generatedPathData = null; // Stores the generated path
+        let selectedCareerTitle = null; // Stores the currently selected career idea
+        let currentSkillTree = null; // To hold the skill tree data
+        let skillToValidate = null; // To hold the ID of the skill being validated
+        let userApiKey = null; // To store the user's provided API key for the session
+        let pendingApiCall = null; // To hold an API call that is pending an API key
+        const initialResumePreviewHTML = document.getElementById('resumePreview').innerHTML;
+        
+        // --- UI Transitions ---
+        function showPage(pageToShow) {
+            const pages = [loginPage, dashboard, assessmentPage, resultsPage, pathsPage, resourcesPage, interviewPage, resumePage, coverLetterPage, skillTreePage, profilePage];
+            
+            if (pages.slice(1).includes(pageToShow)) { // All pages except login
+                document.body.style.backgroundColor = '#f5f7fa'; 
+                document.body.style.overflow = 'auto';
+            } else {
+                document.body.style.backgroundColor = '#1a1a2e'; 
+                document.body.style.overflow = 'hidden';
+            }
+
+            pages.forEach(p => p.style.opacity = '0');
+
+            setTimeout(() => {
+                pages.forEach(p => p.style.display = 'none');
+                
+                if(pageToShow === loginPage || pageToShow === splashScreen) pageToShow.style.display = 'grid';
+                else if (pageToShow === resumePage || pageToShow === coverLetterPage || pageToShow === profilePage) pageToShow.style.display = 'flex';
+                else pageToShow.style.display = 'flex';
+
+
+                setTimeout(() => {
+                    pageToShow.style.opacity = '1';
+                    if(pageToShow === dashboard) {
+                        updateStreak();
+                        setupNotifications();
+                    }
+                }, 50);
+            }, 500);
+        }
+        
+        // --- Event Listeners ---
+        loginForm.addEventListener('submit', (e) => { e.preventDefault(); showPage(dashboard); });
+        googleSignInButton.addEventListener('click', () => { showPage(dashboard); });
+        
+        logoutButton.addEventListener('click', () => { 
+            // Clear saved path on logout
+            localStorage.removeItem('careerCraftPath');
+            localStorage.removeItem('skillTreeData');
+            generatedPathData = null;
+            currentSkillTree = null;
+            userApiKey = null; // Clear API key on logout
+            showPage(loginPage); 
+        });
+
+        profileIcon.addEventListener('click', () => {
+            populateProfilePage();
+            showPage(profilePage);
+        });
+
+        careerAssessmentBtn.addEventListener('click', () => { showPage(assessmentPage); });
+        
+        const openPersonalizedPaths = () => {
+             const savedPath = localStorage.getItem('careerCraftPath');
+            if (savedPath) {
+                generatedPathData = JSON.parse(savedPath);
+                populateAndShowPathsPage(generatedPathData);
+            } else {
+                // Guide user to assessment first
+                alert("Let's discover your path first! Please complete the career assessment.");
+                showPage(assessmentPage); 
+            }
+        };
+        personalizedPathsBtn.addEventListener('click', openPersonalizedPaths);
+        viewPathsBtnHero.addEventListener('click', () => {
+            document.querySelector('#dashboard .features').scrollIntoView({ behavior: 'smooth' });
+        });
+        
+        skillTreeBtn.addEventListener('click', () => {
+            const savedTree = localStorage.getItem('skillTreeData');
+             const savedPath = localStorage.getItem('careerCraftPath');
+            if(savedTree && savedPath){
+                currentSkillTree = JSON.parse(savedTree);
+                generatedPathData = JSON.parse(savedPath);
+                renderSkillTree();
+                showPage(skillTreePage);
+            } else {
+                 alert("Please complete your assessment and generate a career path first to build your skill tree.");
+                showPage(assessmentPage);
+            }
+        });
+        
+        learningResourcesBtn.addEventListener('click', () => { showPage(resourcesPage); });
+        
+        interviewPrepBtn.addEventListener('click', () => {
+             const savedPath = localStorage.getItem('careerCraftPath');
+             if (savedPath) {
+                generatedPathData = JSON.parse(savedPath);
+                populateAndShowInterviewPage(generatedPathData);
+            } else {
+                alert("Please complete your assessment and generate a career path first to get tailored interview questions.");
+                showPage(assessmentPage); 
+            }
+        });
+        
+        resumeBuilderBtn.addEventListener('click', () => { showPage(resumePage); });
+        coverLetterBtn.addEventListener('click', () => { showPage(coverLetterPage); });
+
+        backToDashboardBtn.addEventListener('click', () => { showPage(dashboard); });
+        backToDashboardBtn2.addEventListener('click', () => { showPage(dashboard); });
+        backToDashboardBtn3.addEventListener('click', () => { showPage(dashboard); });
+        backToDashboardBtn4.addEventListener('click', () => { showPage(dashboard); });
+        backToDashboardBtn5.addEventListener('click', () => { showPage(dashboard); });
+        backToDashboardBtn6.addEventListener('click', () => { showPage(dashboard); });
+        backToDashboardBtn7.addEventListener('click', () => { showPage(dashboard); });
+        backToDashboardBtn8.addEventListener('click', () => { showPage(dashboard); });
+        
+        backToAssessmentBtn.addEventListener('click', () => {
+            // Clear saved path if user wants to redo
+            localStorage.removeItem('careerCraftPath');
+            localStorage.removeItem('skillTreeData');
+            generatedPathData = null;
+            currentSkillTree = null;
+            showPage(assessmentPage); 
+        });
+
+        startLearningBtn.addEventListener('click', () => {
+            if (selectedCareerTitle) {
+                generatePersonalizedPath(selectedCareerTitle);
+            }
+        });
+
+
+        // --- Assessment & Results Logic ---
+        finishAssessmentBtn.addEventListener('click', function() {
+            userAssessment.interests = Array.from(document.querySelectorAll('#assessmentPage .assessment-step[data-step="1"] .option-card.selected')).map(el => el.dataset.value);
+            userAssessment.skills = Array.from(document.querySelectorAll('#assessmentPage .assessment-step[data-step="2"] .option-card.selected')).map(el => el.dataset.value);
+            userAssessment.values = Array.from(document.querySelectorAll('#assessmentPage .assessment-step[data-step="3"] .option-card.selected')).map(el => el.dataset.value);
+
+            document.getElementById('interestsSummary').innerHTML = '<h4>Interests</h4>' + userAssessment.interests.map(i => `<span>${i}</span>`).join('');
+            document.getElementById('skillsSummary').innerHTML = '<h4>Skills</h4>' + userAssessment.skills.map(s => `<span>${s}</span>`).join('');
+            document.getElementById('valuesSummary').innerHTML = '<h4>Values</h4>' + userAssessment.values.map(v => `<span>${v}</span>`).join('');
+            
+            document.getElementById('careerIdeasContainer').innerHTML = '';
+            startLearningBtnContainer.style.display = 'none'; // Hide button initially
+            showPage(resultsPage);
+        });
+        
+        // --- REFACTORED Centralized AI API Integration ---
+        async function callGeminiAPI(payload) {
+            // Check for API key first
+            if (!userApiKey) {
+                // Store the current function call to be executed after key is provided
+                pendingApiCall = () => callGeminiAPI(payload);
+                apiKeyModal.style.display = 'flex';
+                // Stop the current execution. It will be re-triggered by the modal's button.
+                return;
+            }
+
+            loadingModal.style.display = 'flex';
+            const promptText = payload.contents[0].parts[0].text;
+            let useJsonOutput = false;
+
+            const apiKey = userApiKey; // Use the key provided by the user
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+            
+            // Add safety settings to every request
+            payload.safetySettings = [
+                { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_NONE" },
+                { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_NONE" },
+                { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_NONE" },
+                { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_NONE" },
+            ];
+
+            // Define schemas and add to payload if applicable
+            if (promptText.includes("generate a professionally structured resume")) {
+                useJsonOutput = true;
+                const resumeSchema = {
+                    type: "OBJECT",
+                    properties: {
+                        name: { type: "STRING", description: "The person's full name." },
+                        title: { type: "STRING", description: "The person's professional title (e.g., Software Engineer)." },
+                        email: { type: "STRING", description: "The person's email address." },
+                        phone: { type: "STRING", description: "The person's phone number." },
+                        location: { type: "STRING", description: "The person's city and country." },
+                        summary: { type: "STRING", description: "A brief professional summary, 2-3 sentences." },
+                        experience: { type: "ARRAY", items: { type: "OBJECT", properties: { jobTitle: { type: "STRING" }, company: { type: "STRING" }, dates: { type: "STRING" }, description: { type: "STRING" } } } },
+                        education: { type: "ARRAY", items: { type: "OBJECT", properties: { degree: { type: "STRING" }, school: { type: "STRING" } } } },
+                        skills: { type: "ARRAY", items: { type: "STRING" } }
+                    }
+                };
+                payload.generationConfig = { responseMimeType: "application/json", responseSchema: resumeSchema };
+            } else if (promptText.includes("generate 4 suitable career path ideas")) {
+                useJsonOutput = true;
+                const careerSchema = {
+                    type: "OBJECT",
+                    properties: {
+                        careers: {
+                            type: "ARRAY",
+                            description: "A list of 4 career ideas.",
+                            items: {
+                                type: "OBJECT",
+                                properties: {
+                                    title: { type: "STRING" },
+                                    description: { type: "STRING" }
+                                }
+                            }
+                        }
+                    }
+                };
+                payload.generationConfig = { responseMimeType: "application/json", responseSchema: careerSchema };
+            } else if (promptText.includes("Generate a personalized career path")) {
+                useJsonOutput = true;
+                const pathSchema = {
+                    type: "OBJECT",
+                    properties: {
+                        skillsNeed: { type: "ARRAY", items: { type: "STRING" } },
+                        milestones: { type: "ARRAY", items: { type: "OBJECT", properties: { title: { type: "STRING" }, description: { type: "STRING" } } } },
+                        interviewQuestions: { type: "ARRAY", items: { type: "OBJECT", properties: { question: { type: "STRING" }, answer: { type: "STRING" } } } },
+                        skillTree: { type: "ARRAY", items: { type: "OBJECT", properties: { branchName: { type: "STRING" }, skills: { type: "ARRAY", items: { type: "OBJECT", properties: { id: { type: "STRING" }, name: { type: "STRING" }, icon: { type: "STRING" }, status: { type: "STRING" }, projectTitle: { type: "STRING" }, projectDescription: { type: "STRING" } } } } } } }
+                    }
+                };
+                payload.generationConfig = { responseMimeType: "application/json", responseSchema: pathSchema };
+            }
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (!response.ok) {
+                    const errorBody = await response.json().catch(() => ({ message: 'Could not parse error response.' }));
+                    const detailedMessage = errorBody?.error?.message || `HTTP status ${response.status}`;
+                    console.error("Gemini API Error:", errorBody);
+                    
+                    if (response.status === 401) {
+                         throw new Error(`API call failed: Unauthorized (401). Please check your API key.`);
+                    }
+                    throw new Error(`API call failed: ${detailedMessage}`);
+                }
+                
+                const result = await response.json();
+                const candidate = result.candidates?.[0];
+
+                if (candidate && candidate.content?.parts?.[0]?.text) {
+                    const text = candidate.content.parts[0].text;
+                    loadingModal.style.display = 'none';
+                    return useJsonOutput ? JSON.parse(text) : text;
+                } else if (candidate && candidate.finishReason === "SAFETY") {
+                    throw new Error("API call blocked due to safety settings. The prompt may contain sensitive content.");
+                }
+                else {
+                    throw new Error("Invalid response structure from API.");
+                }
+            } catch (error) {
+                loadingModal.style.display = 'none';
+                console.error("Error calling Gemini API:", error);
+                alert(error.message);
+                return null;
+            }
+        }
+
+        // --- Event Listener for the API Key Modal ---
+        saveApiKeyBtn.addEventListener('click', () => {
+            const key = apiKeyInput.value;
+            if (key && key.trim() !== '') {
+                userApiKey = key.trim();
+                apiKeyModal.style.display = 'none';
+                apiKeyInput.value = ''; // Clear the input
+                // If there was an API call waiting for the key, execute it now
+                if (pendingApiCall) {
+                    pendingApiCall();
+                    pendingApiCall = null; // Clear the pending call
+                }
+            } else {
+                alert('Please enter a valid API key.');
+            }
+        });
+
+
+        generateIdeasBtn.addEventListener('click', async () => {
+            const prompt = `Based on a user's self-assessment, generate 4 suitable career path ideas. The user's interests are: [${userAssessment.interests.join(', ')}]. Their skills are: [${userAssessment.skills.join(', ')}]. Their work values are: [${userAssessment.values.join(', ')}].`;
+            const payload = { contents: [{ parts: [{ text: prompt }] }] };
+            const data = await callGeminiAPI(payload);
+            if (data && data.careers) {
+                const container = document.getElementById('careerIdeasContainer');
+                container.innerHTML = '<h3>Select a Path to Explore:</h3>';
+                data.careers.forEach(career => {
+                    const card = document.createElement('div');
+                    card.className = 'career-idea-card';
+                    card.innerHTML = `<h4>${career.title}</h4><p>${career.description}</p>`;
+                    card.onclick = () => selectCareerIdea(card, career.title);
+                    container.appendChild(card);
+                });
+            }
+        });
+        
+        function selectCareerIdea(selectedCard, careerTitle) {
+            document.querySelectorAll('.career-idea-card').forEach(card => card.classList.remove('selected'));
+            selectedCard.classList.add('selected');
+            selectedCareerTitle = careerTitle;
+            startLearningBtnContainer.style.display = 'block';
+        }
+
+
+        async function generatePersonalizedPath(careerTitle) {
+            const prompt = `Generate a personalized career path and a skill tree for a user aiming to become a "${careerTitle}". The user already has skills in [${userAssessment.skills.join(', ')}]. 
+            1.  Create a step-by-step timeline with 3-4 milestones (title, description).
+            2.  Identify 3 key skills they need to acquire.
+            3.  Generate 5 common interview questions (question, answer).
+            4.  Design a skill tree with 3 branches (e.g., 'Foundational', 'Intermediate', 'Advanced'). Each branch should have 2-3 skill nodes. Each node needs an 'id' (e.g., 'html_basics'), a 'name', an 'icon' (Font Awesome class e.g., 'fas fa-code'), a 'projectTitle', and a 'projectDescription'. The first node of the first branch should have a 'status' of 'unlocked', all others 'locked'.`;
+
+             const payload = { contents: [{ parts: [{ text: prompt }] }] };
+            
+            const data = await callGeminiAPI(payload);
+            if(data && data.milestones && data.skillTree) {
+                generatedPathData = {
+                    careerTitle,
+                    skillsHave: userAssessment.skills,
+                    skillsNeed: data.skillsNeed,
+                    milestones: data.milestones,
+                    interviewQuestions: data.interviewQuestions
+                };
+                currentSkillTree = data.skillTree;
+                
+                // Save the generated data to localStorage
+                localStorage.setItem('careerCraftPath', JSON.stringify(generatedPathData));
+                localStorage.setItem('skillTreeData', JSON.stringify(currentSkillTree));
+
+                populateAndShowPathsPage(generatedPathData);
+            }
+        }
+        
+        function populateAndShowPathsPage(pathData) {
+            const skillsGapContainer = document.getElementById('pathSkillsGap');
+            skillsGapContainer.innerHTML = `
+                <h3>Your Path to becoming a <strong>${pathData.careerTitle}</strong></h3>
+                <div class="skills-columns">
+                    <div class="skills-list">
+                        <h4><i class="fas fa-check-circle have"></i> Skills You Have</h4>
+                        <ul>${pathData.skillsHave.map(s => `<li><i class="fas fa-star have"></i> ${s}</li>`).join('')}</ul>
+                    </div>
+                    <div class="skills-list">
+                        <h4><i class="fas fa-exclamation-circle need"></i> Skills You Need</h4>
+                        <ul>${pathData.skillsNeed.map(s => `<li><i class="fas fa-plus-circle need"></i> ${s}</li>`).join('')}</ul>
+                    </div>
+                </div>`;
+
+            const timelineContainer = document.getElementById('pathTimeline');
+            timelineContainer.innerHTML = '';
+            pathData.milestones.forEach((milestone, index) => {
+                 timelineContainer.innerHTML += `
+                    <div class="timeline-item">
+                        <div class="timeline-dot">${index + 1}</div>
+                        <div class="timeline-content">
+                            <h4>${milestone.title} <button class="complete-btn">Mark Complete</button></h4>
+                            <p>${milestone.description}</p>
+                        </div>
+                    </div>`;
+            });
+            timelineContainer.innerHTML += `
+                 <div class="timeline-item">
+                     <div class="timeline-dot"><i class="fas fa-flag-checkered"></i></div>
+                    <div class="timeline-content">
+                        <h4>Start Applying!</h4>
+                        <p>You've built a strong foundation. It's time to craft your resume and start applying for ${pathData.careerTitle} roles.</p>
+                    </div>
+                </div>`;
+
+            showPage(pathsPage);
+        }
+        
+        function populateAndShowInterviewPage(pathData) {
+            const faqContainer = document.getElementById('faqAccordion');
+            document.getElementById('interviewTitle').innerHTML = `Practice Questions for a <strong>${pathData.careerTitle}</strong>`;
+            faqContainer.innerHTML = ''; 
+            
+            pathData.interviewQuestions.forEach(faq => {
+                const item = document.createElement('div');
+                item.className = 'faq-item';
+                item.innerHTML = `
+                    <div class="faq-question">${faq.question}</div>
+                    <div class="faq-answer">
+                        <p><strong>Example Answer:</strong> ${faq.answer}</p>
+                        <div class="answer-feedback-container">
+                             <textarea placeholder="Type your answer here..."></textarea>
+                             <button class="get-feedback-btn">✨ Get Feedback</button>
+                             <div class="feedback-result" style="display:none;"></div>
+                        </div>
+                    </div>
+                `;
+                faqContainer.appendChild(item);
+            });
+
+            showPage(interviewPage);
+        }
+        
+        // --- Assessment Page Logic ---
+        const assessmentSteps = document.querySelectorAll('.assessment-step');
+        const progressBar = document.querySelector('.progress-bar-inner');
+        let currentStep = 1;
+
+        function updateAssessmentUI() {
+            assessmentSteps.forEach(step => {
+                step.classList.remove('active');
+                if (parseInt(step.dataset.step) === currentStep) { step.classList.add('active'); }
+            });
+             if(currentStep === 1) progressBar.style.width = '33%';
+             if(currentStep === 2) progressBar.style.width = '66%';
+             if(currentStep === 3) progressBar.style.width = '100%';
+        }
+        
+        assessmentPage.addEventListener('click', function(e) {
+            if (e.target.classList.contains('next')) { currentStep++; updateAssessmentUI(); } 
+            else if (e.target.classList.contains('prev')) { currentStep--; updateAssessmentUI(); }
+            if(e.target.closest('.option-card')) {
+                const card = e.target.closest('.option-card');
+                card.classList.toggle('selected');
+                const currentStepElement = document.querySelector(`.assessment-step[data-step="${currentStep}"]`);
+                const selectedOptions = currentStepElement.querySelectorAll('.option-card.selected');
+                const nextButton = currentStepElement.querySelector('.next, #finishAssessmentBtn');
+                if(nextButton) { nextButton.disabled = selectedOptions.length === 0; }
+            }
+        });
+
+        // --- Paths & Interview Page Logic ---
+        function handleAccordion(e) {
+             if(e.target.classList.contains('faq-question')) {
+                const item = e.target.parentElement;
+                const answer = item.querySelector('.faq-answer');
+                const wasActive = item.classList.contains('active');
+                
+                // Close all other items
+                item.parentElement.querySelectorAll('.faq-item').forEach(i => {
+                    if (i !== item) {
+                        i.classList.remove('active');
+                        i.querySelector('.faq-answer').style.maxHeight = '0';
+                        i.querySelector('.faq-answer').style.padding = '0 20px';
+                    }
+                });
+
+                if(!wasActive) {
+                    item.classList.add('active');
+                    answer.style.maxHeight = answer.scrollHeight + 'px';
+                    answer.style.padding = '15px 20px 0 20px';
+                } else {
+                     item.classList.remove('active');
+                    answer.style.maxHeight = '0';
+                    answer.style.padding = '0 20px';
+                }
+            }
+        }
+        
+        pathsPage.addEventListener('click', function(e){
+            if(e.target.classList.contains('complete-btn')){
+                const item = e.target.closest('.timeline-item');
+                item.classList.toggle('completed');
+                e.target.textContent = item.classList.contains('completed') ? 'Completed' : 'Mark Complete';
+            }
+        });
+        
+        interviewPage.addEventListener('click', handleAccordion);
+        
+        interviewPage.addEventListener('click', async function(e) {
+            if(e.target.classList.contains('get-feedback-btn')) {
+                const button = e.target;
+                const container = button.closest('.answer-feedback-container');
+                const textarea = container.querySelector('textarea');
+                const feedbackResultDiv = container.querySelector('.feedback-result');
+                const question = button.closest('.faq-item').querySelector('.faq-question').textContent;
+                const userAnswer = textarea.value;
+
+                if (!userAnswer.trim()) {
+                    alert("Please provide an answer to get feedback.");
+                    return;
+                }
+
+                const prompt = `As an expert interview coach, provide constructive feedback on the following answer to an interview question. Focus on clarity, structure (like the STAR method), and impact. Be encouraging. \n\nQuestion: "${question}"\n\nUser's Answer: "${userAnswer}"`;
+                const payload = { contents: [{ parts: [{ text: prompt }] }] };
+
+                const feedback = await callGeminiAPI(payload); 
+                if (feedback) {
+                    feedbackResultDiv.innerHTML = feedback.replace(/\n/g, '<br>');
+                    feedbackResultDiv.style.display = 'block';
+
+                    // Adjust accordion height
+                    const answerDiv = button.closest('.faq-answer');
+                    answerDiv.style.maxHeight = answerDiv.scrollHeight + feedbackResultDiv.scrollHeight + 'px';
+                }
+            }
+        });
+
+        
+        // --- Resources Page Logic ---
+        const filterTabs = document.querySelectorAll('.filter-tab');
+        const resourceCards = document.querySelectorAll('.resource-list .resource-card');
+
+        filterTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                filterTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                const filter = tab.dataset.filter;
+                resourceCards.forEach(card => {
+                    card.style.display = (filter === 'all' || card.dataset.category === filter) ? 'flex' : 'none';
+                });
+            });
+        });
+
+        // --- Streak and Notification Logic ---
+        function updateStreak() {
+            let streak = parseInt(localStorage.getItem('streakCount')) || 0;
+            const lastLogin = localStorage.getItem('lastLoginDate');
+            const today = new Date().toISOString().split('T')[0];
+
+            if (lastLogin) {
+                const lastLoginDate = new Date(lastLogin);
+                const todayDate = new Date(today);
+                
+                const diffTime = todayDate - lastLoginDate;
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                if (diffDays === 1) {
+                    streak++; 
+                } else if (diffDays > 1) {
+                    streak = 1;
+                }
+            } else {
+                streak = 1;
+            }
+
+            localStorage.setItem('streakCount', streak);
+            localStorage.setItem('lastLoginDate', today);
+            streakCountSpan.textContent = streak;
+        }
+
+        function setupNotifications() {
+            if (!('Notification' in window)) {
+                return;
+            }
+
+            if (Notification.permission === 'default' && !localStorage.getItem('notificationDismissed')) {
+                 notificationModal.style.display = 'flex';
+            }
+        }
+
+        allowNotificationsBtn.addEventListener('click', () => {
+            Notification.requestPermission().then(permission => {
+                if (permission === 'granted') {
+                    setTimeout(() => {
+                         const streak = localStorage.getItem('streakCount') || 1;
+                         new Notification('Career Craft Reminder', {
+                            body: `🔥 Keep your ${streak}-day streak going! Time to continue your learning journey.`,
+                            icon: 'https://placehold.co/128x128/3498db/ffffff?text=CC'
+                         });
+                    }, 5000); 
+                }
+            });
+            notificationModal.style.display = 'none';
+        });
+
+        dismissNotificationsBtn.addEventListener('click', () => {
+             localStorage.setItem('notificationDismissed', 'true');
+             notificationModal.style.display = 'none';
+        });
+
+        // --- Resume & Cover Letter Builder Logic ---
+        generateResumeBtn.addEventListener('click', async function() {
+            const userInput = document.getElementById('resumeInputText').value;
+            if (!userInput.trim()) {
+                alert("Please provide your information in the text box to generate a resume.");
+                return;
+            }
+            const resumePreview = document.getElementById('resumePreview');
+            resumePreview.innerHTML = '<p style="text-align:center;">Generating your resume...</p>';
+
+            const prompt = `Based on the following raw text provided by a user, generate a professionally structured resume. Raw text: "${userInput}"`;
+            
+            const payload = {
+                contents: [{ parts: [{ text: prompt }] }],
+            };
+            
+            const resumeData = await callGeminiAPI(payload);
+            if (resumeData) {
+                renderGeneratedResume(resumeData);
+            } else {
+                // Restore the original content if the API call fails
+                resumePreview.innerHTML = initialResumePreviewHTML;
+                 alert("Could not generate a resume. Please check your input and try again.");
+            }
+        });
+
+        function renderGeneratedResume(data) {
+            const resumePreview = document.getElementById('resumePreview');
+            
+            // Build the new HTML structure
+            let newHtml = `
+                <h1>${data.name || 'Your Name'}</h1>
+                <p>${data.title || 'Your Title'}</p>
+                <div class="preview-contact">
+                    <span>${data.email || ''}</span>
+                    ${data.phone ? `| <span>${data.phone}</span>` : ''}
+                    ${data.location ? `| <span>${data.location}</span>` : ''}
+                </div>
+                <hr>
+                <h3>Professional Summary</h3>
+                <p>${data.summary || ''}</p>
+            `;
+
+            if (data.experience && data.experience.length > 0) {
+                newHtml += '<hr><h3>Work Experience</h3>';
+                data.experience.forEach(job => {
+                    let descriptionHtml = job.description || '';
+                    if (descriptionHtml.includes('*')) {
+                        const points = descriptionHtml.split('*').filter(p => p.trim() !== '');
+                        descriptionHtml = '<ul>' + points.map(p => `<li>${p.trim()}</li>`).join('') + '</ul>';
+                    } else {
+                        descriptionHtml = `<p>${descriptionHtml}</p>`;
+                    }
+                    newHtml += `
+                        <div>
+                            <h4>${job.jobTitle || ''}</h4>
+                            <p><em>${job.company || ''} | ${job.dates || ''}</em></p>
+                            ${descriptionHtml}
+                        </div>
+                    `;
+                });
+            }
+
+            if (data.education && data.education.length > 0) {
+                newHtml += '<hr><h3>Education</h3>';
+                data.education.forEach(edu => {
+                    newHtml += `<div><p><strong>${edu.degree || ''}</strong> - ${edu.school || ''}</p></div>`;
+                });
+            }
+
+            if (data.skills && data.skills.length > 0) {
+                 newHtml += `<hr><h3>Skills</h3><p>${data.skills.join(', ')}</p>`;
+            }
+            
+            // Set the new HTML content
+            resumePreview.innerHTML = newHtml;
+        }
+
+
+        downloadPdfBtn.addEventListener('click', () => {
+            const { jsPDF } = window.jspdf;
+            const resume = document.getElementById('resumePreview');
+            
+            html2canvas(resume, { scale: 2 }).then(canvas => {
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+                pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+                pdf.save("resume.pdf");
+            });
+        });
+
+        generateCoverLetterBtn.addEventListener('click', async function() {
+            const jobTitle = document.getElementById('clJobTitle').value;
+            const company = document.getElementById('clCompany').value;
+            const jobDesc = document.getElementById('clJobDesc').value;
+            // Get user info from the generated resume if possible
+            const userName = document.querySelector('#resumePreview h1').textContent;
+            const userSkills = document.querySelector('#resumePreview h3:last-of-type + p').textContent;
+            const userSummary = document.querySelector('#resumePreview h3:first-of-type + p').textContent;
+
+            if(!jobTitle || !company || !jobDesc) {
+                alert("Please fill in all job details to generate a cover letter.");
+                return;
+            }
+            const prompt = `Write a professional cover letter. My info: Name: ${userName}, Skills: ${userSkills}, Summary: "${userSummary}". Job info: Role: ${jobTitle}, Company: ${company}, Description: "${jobDesc}"`;
+             const payload = { contents: [{ parts: [{ text: prompt }] }] };
+             const letter = await callGeminiAPI(payload);
+             if (letter) {
+                document.getElementById('generatedCoverLetter').value = letter;
+             }
+        });
+
+        // --- Skill Tree Logic ---
+        function renderSkillTree() {
+            const container = document.getElementById('skillTreeContainer');
+            document.getElementById('skillTreeHeader').innerHTML = `Your Skill Tree: <strong>${generatedPathData.careerTitle}</strong>`;
+            container.innerHTML = ''; // Clear previous tree
+            
+            if (!currentSkillTree) return;
+
+            currentSkillTree.forEach(branch => {
+                const branchDiv = document.createElement('div');
+                branchDiv.className = 'skill-branch';
+                let isBranchComplete = true;
+
+                let skillsHTML = `<h3>${branch.branchName}</h3>`;
+                branch.skills.forEach(skill => {
+                    skillsHTML += `
+                        <div class="skill-node ${skill.status}" data-skill-id="${skill.id}">
+                            <i class="${skill.icon}"></i>
+                            <span>${skill.name}</span>
+                        </div>
+                    `;
+                    if (skill.status !== 'completed') {
+                        isBranchComplete = false;
+                    }
+                });
+                branchDiv.innerHTML = skillsHTML;
+                if (isBranchComplete) {
+                    branchDiv.classList.add('completed');
+                }
+                container.appendChild(branchDiv);
+            });
+        }
+
+        document.getElementById('skillTreeContainer').addEventListener('click', (e) => {
+            const node = e.target.closest('.skill-node');
+            if (node && node.classList.contains('unlocked')) {
+                const skillId = node.dataset.skillId;
+                skillToValidate = skillId;
+                
+                // Find skill details
+                let skillDetails;
+                for(const branch of currentSkillTree) {
+                    const found = branch.skills.find(s => s.id === skillId);
+                    if(found) {
+                        skillDetails = found;
+                        break;
+                    }
+                }
+
+                if (skillDetails) {
+                    document.getElementById('projectModalTitle').textContent = skillDetails.projectTitle;
+                    document.getElementById('projectModalDesc').textContent = skillDetails.projectDescription;
+                    document.getElementById('projectDetails').value = '';
+                    document.getElementById('projectFeedback').style.display = 'none';
+                    projectModal.style.display = 'flex';
+                }
+            }
+        });
+
+        closeProjectModalBtn.addEventListener('click', () => {
+            projectModal.style.display = 'none';
+        });
+
+        projectForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const projectDesc = document.getElementById('projectDetails').value;
+            if(!projectDesc.trim()) {
+                alert("Please describe your project.");
+                return;
+            }
+
+            const prompt = `Provide brief, encouraging feedback on this project description for a portfolio, focusing on whether it demonstrates the intended skill. Project Description: "${projectDesc}"`;
+            const payload = { contents: [{ parts: [{ text: prompt }] }] };
+
+            const feedback = await callGeminiAPI(payload);
+            if(feedback) {
+                const feedbackDiv = document.getElementById('projectFeedback');
+                feedbackDiv.innerHTML = `<strong>AI Feedback:</strong><br>${feedback.replace(/\n/g, '<br>')}`;
+                feedbackDiv.style.display = 'block';
+
+                // Mark skill as complete and unlock next one
+                let skillCompleted = false;
+                for (let i = 0; i < currentSkillTree.length; i++) {
+                    const branch = currentSkillTree[i];
+                    for (let j = 0; j < branch.skills.length; j++) {
+                        if (branch.skills[j].id === skillToValidate) {
+                            branch.skills[j].status = 'completed';
+                            // Unlock the next skill in the same branch
+                            if (j + 1 < branch.skills.length) {
+                                branch.skills[j+1].status = 'unlocked';
+                            } 
+                            // Or unlock the first skill of the next branch
+                            else if (i + 1 < currentSkillTree.length) {
+                                currentSkillTree[i+1].skills[0].status = 'unlocked';
+                            }
+                            skillCompleted = true;
+                            break;
+                        }
+                    }
+                    if(skillCompleted) break;
+                }
+
+                localStorage.setItem('skillTreeData', JSON.stringify(currentSkillTree));
+                renderSkillTree();
+                setTimeout(() => {
+                    projectModal.style.display = 'none';
+                }, 4000); // Close modal after showing feedback for a few seconds
+            }
+        });
+
+
+        // --- Profile Page Logic ---
+        function populateProfilePage() {
+            // Basic Info (can be made editable later)
+            document.getElementById('profileName').textContent = document.querySelector('#resumePreview h1').textContent;
+            document.getElementById('profileEmail').textContent = document.querySelector('#resumePreview .preview-contact span:first-of-type').textContent;
+
+
+            // Stats
+            document.getElementById('profileStreak').textContent = localStorage.getItem('streakCount') || '0';
+            const savedPath = localStorage.getItem('careerCraftPath');
+            if (savedPath) {
+                const pathData = JSON.parse(savedPath);
+                document.getElementById('profilePath').textContent = pathData.careerTitle;
+            } else {
+                document.getElementById('profilePath').textContent = 'Not Set';
+            }
+
+            // Assessment Summary
+            const assessmentDetailsContainer = document.getElementById('profileAssessmentDetails');
+            if (userAssessment.interests.length > 0 || userAssessment.skills.length > 0 || userAssessment.values.length > 0) {
+                assessmentDetailsContainer.innerHTML = `
+                    <div class="summary-list">
+                        <h5>Interests</h5>
+                        ${userAssessment.interests.map(i => `<span>${i}</span>`).join('')}
+                    </div>
+                    <div class="summary-list">
+                        <h5>Skills</h5>
+                        ${userAssessment.skills.map(s => `<span>${s}</span>`).join('')}
+                    </div>
+                    <div class="summary-list">
+                        <h5>Values</h5>
+                        ${userAssessment.values.map(v => `<span>${v}</span>`).join('')}
+                    </div>
+                `;
+            } else {
+                assessmentDetailsContainer.innerHTML = '<p>Complete the career assessment to see your summary here.</p>';
+            }
+        }
+
+
+        // Initial Splash Screen transition
+        setTimeout(() => {
+            splash.style.opacity = '0';
+            setTimeout(() => {
+                splash.style.display = 'none';
+                showPage(loginPage);
+            }, 500);
+        }, 3000);
+        
+        updateAssessmentUI();
+    </script>
+</body>
+</html>
