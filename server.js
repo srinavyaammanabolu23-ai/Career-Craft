@@ -40,9 +40,23 @@ app.get("/", (req, res) => {
     res.send("Career Craft Backend is Running 🚀");
 });
 
+app.get("/test", (req, res) => {
+    res.json({
+        success: true
+    });
+});
+
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, "0.0.0.0", () => {
     console.log(`Server running on port ${PORT}`);
+});
+
+server.on("listening", () => {
+    console.log("Express is listening successfully.");
+});
+
+server.on("error", (err) => {
+    console.error("Server Error:", err);
 });
