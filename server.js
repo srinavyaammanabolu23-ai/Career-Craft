@@ -35,6 +35,12 @@ app.use("/api/jobs", require("./routes/jobs"));
 app.use("/api/ai", require("./routes/ai"));
 
 
+// Health Check
+app.get("/", (req, res) => {
+    res.send("Career Craft Backend is Running 🚀");
+});
+
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
