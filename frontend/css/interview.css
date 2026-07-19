@@ -1,0 +1,78 @@
+/* --- INTERVIEW PREP PAGE STYLES --- */
+        #interviewPage {
+            display: none; opacity: 0; width: 100%; min-height: 100vh; transition: opacity 0.5s ease-in-out; align-items: flex-start; justify-content: center; padding: 20px; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow-y: auto;
+        }
+        #interviewPage .container {
+            max-width: 900px; width: 100%; background: white; border-radius: 12px; box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1); overflow: hidden; margin-top: 20px; margin-bottom: 20px;
+        }
+         #interviewPage header {
+             background: #2c3e50; color: white; padding: 20px 30px; display: flex; justify-content: space-between; align-items: center;
+        }
+        #interviewPage header h2 { font-size: 24px; }
+        .interview-content { padding: 30px 40px; }
+        .interview-content h3 {
+            font-size: 20px; color: #2c3e50; margin-bottom: 20px; text-align: center;
+        }
+        .faq-item {
+            background: #fff;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+        .faq-question {
+            padding: 15px 20px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #34495e;
+        }
+        .faq-question::after {
+            content: '\f078'; /* Font Awesome chevron-down */
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            transition: transform 0.3s ease;
+        }
+        .faq-item.active .faq-question::after {
+            transform: rotate(180deg);
+        }
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            padding: 0 20px;
+            line-height: 1.6;
+            color: #7f8c8d;
+        }
+        /* NEW: Interview answer feedback styles */
+        .answer-feedback-container {
+            padding: 0 20px 15px 20px;
+        }
+        .answer-feedback-container textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 15px;
+            margin-bottom: 10px;
+        }
+         .answer-feedback-container button {
+            background: #3498db;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .feedback-result {
+            margin-top: 15px;
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            padding: 15px;
+            font-size: 14px;
+        }

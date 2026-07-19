@@ -1,0 +1,47 @@
+ /* --- RESUME BUILDER PAGE STYLES --- */
+        .resume-builder-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 20px;
+            flex-grow: 1;
+            overflow-y: auto;
+            align-items: center;
+        }
+        .resume-input-container {
+            width: 100%;
+            max-width: 800px;
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        .resume-input-container h3 {
+            margin-top: 0;
+            text-align: center;
+        }
+        #resumeInputText {
+            min-height: 200px;
+            resize: vertical;
+        }
+        .resume-preview-container {
+            width: 100%;
+            max-width: 800px;
+            overflow-y: auto;
+        }
+        .resume-preview {
+            line-height: 1.6;
+            border: 1px solid #d1d5db; /* A professional, light grey border */
+            padding: 30px; /* Add padding to act as margins */
+            background: white; /* Ensure background is white for PDF */
+            border-radius: 8px; /* Keep the rounded corners */
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05); /* Keep the shadow */
+            margin: 20px 0; /* Add some margin for spacing within the container */
+        }
+        .resume-preview h1 { font-size: 28px; margin: 0; color: #2c3e50; }
+        .resume-preview p { margin: 5px 0; color: #555;}
+        .resume-preview .preview-contact { font-size: 14px; color: #7f8c8d; }
+        .resume-preview hr { border: 0; border-top: 1px solid #e0e0e0; margin: 15px 0; }
+        .resume-preview h3 { font-size: 18px; color: #3498db; margin: 15px 0 5px 0; border-bottom: 2px solid #f0f0f0; padding-bottom: 5px;}
+        .resume-preview h4 { margin: 10px 0 2px 0; }
+        .resume-preview ul { padding-left: 20px; margin: 5px 0; }

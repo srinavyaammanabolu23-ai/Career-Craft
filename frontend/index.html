@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Career Craft</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/assessment.css">
+    <link rel="stylesheet" href="css/careerpath.css">
+    <link rel="stylesheet" href="css/interview.css">
+    <link rel="stylesheet" href="css/resources.css">
+    <link rel="stylesheet" href="css/resume.css">
+    <link rel="stylesheet" href="css/coverletter.css">
+    <link rel="stylesheet" href="css/skilltree.css">
+    <link rel="stylesheet" href="css/profile.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/toast.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@10..48,400;10..48,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- PDF Generation Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+    <div id="splashScreen">
+        <div class="e-card playing">
+            <div class="wave"></div><div class="wave"></div><div class="wave"></div>
+            <div class="infotop">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="icon"><path d="M19.4133 4.89862L14.5863 2.17544C12.9911 1.27485 11.0089 1.27485 9.41368 2.17544L4.58674 4.89862C2.99153 5.7992 2 7.47596 2 9.2763V14.7235C2 16.5238 2.99153 18.2014 4.58674 19.1012L9.41368 21.8252C10.2079 22.2734 11.105 22.5 12.0046 22.5C12.6952 22.5 13.3874 22.3657 14.0349 22.0954C14.2204 22.018 14.4059 21.9273 14.5872 21.8252L19.4141 19.1012C19.9765 18.7831 20.4655 18.3728 20.8651 17.8825C21.597 16.9894 22 15.8671 22 14.7243V9.27713C22 7.47678 21.0085 5.7992 19.4133 4.89862ZM4.10784 14.7235V9.2763C4.10784 8.20928 4.6955 7.21559 5.64066 6.68166L10.4676 3.95848C10.9398 3.69152 11.4701 3.55804 11.9996 3.55804C12.5291 3.55804 13.0594 3.69152 13.5324 3.95848L18.3593 6.68166C19.3045 7.21476 19.8922 8.20928 19.8922 9.2763V9.75997C19.1426 9.60836 18.377 9.53091 17.6022 9.53091C14.7929 9.53091 12.1041 10.5501 10.0309 12.3999C8.36735 13.8847 7.21142 15.8012 6.68783 17.9081L5.63981 17.3165C4.69466 16.7834 4.10699 15.7897 4.10699 14.7235H4.10784ZM10.4676 20.0413L8.60933 18.9924C8.94996 17.0479 9.94402 15.2665 11.4515 13.921C13.1353 12.4181 15.3198 11.5908 17.6022 11.5908C18.3804 11.5908 19.1477 11.6864 19.8922 11.8742V14.7235C19.8922 15.2278 19.7589 15.7254 19.5119 16.1662C18.7615 15.3596 17.6806 14.8528 16.4783 14.8528C14.2136 14.8528 12.3781 16.6466 12.3781 18.8598C12.3781 19.3937 12.4861 19.9021 12.68 20.3676C11.9347 20.5316 11.1396 20.4203 10.4684 20.0413H10.4676Z"></path></svg>
+                <div class="app-name">CAREER CRAFT</div>
+                <div class="tagline">WHERE CAREERS ARE CRAFTED, NOT CHOSEN.</div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="loginPage">
+        <div class="login-card">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="icon"><path d="M19.4133 4.89862L14.5863 2.17544C12.9911 1.27485 11.0089 1.27485 9.41368 2.17544L4.58674 4.89862C2.99153 5.7992 2 7.47596 2 9.2763V14.7235C2 16.5238 2.99153 18.2014 4.58674 19.1012L9.41368 21.8252C10.2079 22.2734 11.105 22.5 12.0046 22.5C12.6952 22.5 13.3874 22.3657 14.0349 22.0954C14.2204 22.018 14.4059 21.9273 14.5872 21.8252L19.4141 19.1012C19.9765 18.7831 20.4655 18.3728 20.8651 17.8825C21.597 16.9894 22 15.8671 22 14.7243V9.27713C22 7.47678 21.0085 5.7992 19.4133 4.89862ZM4.10784 14.7235V9.2763C4.10784 8.20928 4.6955 7.21559 5.64066 6.68166L10.4676 3.95848C10.9398 3.69152 11.4701 3.55804 11.9996 3.55804C12.5291 3.55804 13.0594 3.69152 13.5324 3.95848L18.3593 6.68166C19.3045 7.21476 19.8922 8.20928 19.8922 9.2763V9.75997C19.1426 9.60836 18.377 9.53091 17.6022 9.53091C14.7929 9.53091 12.1041 10.5501 10.0309 12.3999C8.36735 13.8847 7.21142 15.8012 6.68783 17.9081L5.63981 17.3165C4.69466 16.7834 4.10699 15.7897 4.10699 14.7235H4.10784ZM10.4676 20.0413L8.60933 18.9924C8.94996 17.0479 9.94402 15.2665 11.4515 13.921C13.1353 12.4181 15.3198 11.5908 17.6022 11.5908C18.3804 11.5908 19.1477 11.6864 19.8922 11.8742V14.7235C19.8922 15.2278 19.7589 15.7254 19.5119 16.1662C18.7615 15.3596 17.6806 14.8528 16.4783 14.8528C14.2136 14.8528 12.3781 16.6466 12.3781 18.8598C12.3781 19.3937 12.4861 19.9021 12.68 20.3676C11.9347 20.5316 11.1396 20.4203 10.4684 20.0413H10.4676Z"></path></svg>
+            <form id="loginForm">
+                <div class="input-group">
+                    <input type="email" id="email" placeholder="Email">
+                </div>
+                <div class="input-group">
+                    <input type="password" id="password" placeholder="Password">
+                </div>
+                <div class="login-options">
+                    <label class="remember-me"><input type="checkbox" id="rememberMe"> Remember Me</label>
+                    <a href="#" class="forgot-password">Forgot Password?</a>
+                </div>
+                <button type="submit" class="signin-btn">Sign In</button>
+            </form>
+            <div class="divider">or continue with</div>
+            <div class="social-login">
+                 <div class="social-icon" id="googleSignIn">
+                    <svg fill="#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"></path><path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"></path><path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.222,0-9.519-3.487-11.187-8.164l-6.522,5.025C9.505,39.556,16.227,44,24,44z"></path><path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.574l6.19,5.238C44.437,36.218,48,30.651,48,24C48,22.659,47.862,21.35,47.611,20.083z"></path></svg>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="dashboard">
+        <div class="container">
+            <header>
+                <div class="brand">Career Craft</div>
+                <div class="header-right-group">
+                    <div class="streak-counter">
+                        <i class="fas fa-fire"></i>
+                        <span id="streakCount">0</span>
+                    </div>
+                    <nav>
+                        <a href="#">Home</a>
+                        <a href="#" id="logoutButton">Logout</a>
+                    </nav>
+                    <div class="profile-icon">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                </div>
+            </header>
+            <section class="hero">
+                <div class="dashboard-greeting">
+        <h1 id="dashboardGreeting">Welcome Back! 👋</h1>
+        <p id="dashboardSubGreeting">
+            Your AI-powered career journey starts here.
+        </p>
+    </div>
+       <div class="career-tip-card">
+    <div class="tip-icon">
+        <i class="fas fa-lightbulb"></i>
+    </div>
+
+    <div class="tip-content">
+        <h3>AI Career Tip</h3>
+        <p id="careerTip">
+            Loading today's career tip...
+        </p>
+    </div>
+</div>
+<div class="dashboard-stats">
+
+    <div class="stat-card">
+        <i class="fas fa-road"></i>
+        <h2 id="statCareer">--</h2>
+        <p>Career Goal</p>
+    </div>
+
+    <div class="stat-card">
+        <i class="fas fa-check-circle"></i>
+        <h2 id="statSkills">0</h2>
+        <p>Skills Selected</p>
+    </div>
+
+</div>
+                <p class="subheading">Build your future with tailored career paths and professional development resources</p>
+                <button class="btn" id="viewPathsBtnHero">View Paths <i class="fas fa-arrow-right"></i></button>
+            </section>
+            <section class="features">
+                <div class="feature" id="careerAssessmentBtn"><div class="feature-icon">📊</div><h3>Career Assessment</h3><p>Discover your strengths and interests with our comprehensive assessment tools.</p></div>
+                <div class="feature" id="personalizedPathsBtn"><div class="feature-icon">🎯</div><h3>Personalized Paths</h3><p>Get customized career roadmaps based on your goals and skills.</p></div>
+                <div class="feature" id="skillTreeBtn"><div class="feature-icon"><i class="fas fa-sitemap"></i></div><h3>Skill Tree</h3><p>Visually track and validate your skills through project-based learning.</p></div>
+                <div class="feature" id="learningResourcesBtn"><div class="feature-icon">📚</div><h3>Learning Resources</h3><p>Access courses, tutorials, and materials to develop your professional skills.</p></div>
+                <div class="feature" id="interviewPrepBtn"><div class="feature-icon"><i class="fas fa-microphone-alt"></i></div><h3>Interview Prep</h3><p>Practice with AI-powered questions and get feedback on your answers.</p></div>
+                <div class="feature" id="resumeBuilderBtn"><div class="feature-icon"><i class="fas fa-file-alt"></i></div><h3>Resume Builder</h3><p>Craft a professional resume with AI assistance.</p></div>
+                <div class="feature" id="coverLetterBtn"><div class="feature-icon"><i class="fas fa-envelope-open-text"></i></div><h3>Cover Letter Writer</h3><p>Generate a tailored cover letter for any job application.</p></div>
+                <div class="feature" id="jobRecommendationsBtn"><div class="feature-icon"><i class="fas fa-briefcase"></i></div><h3>Job Recommendations</h3><p>Discover jobs that match your career path and apply directly.</p></div></section></div></div>
+
+    <!-- ASSESSMENT PAGE -->
+    <div id="assessmentPage" style="display:none";> 
+         <div class="container">
+            <header>
+                <h2>Career Assessment</h2>
+                <button class="back-btn" id="backToDashboardBtn"><i class="fas fa-arrow-left"></i> Back to Dashboard</button>
+            </header>
+            <div class="assessment-content">
+                <div class="progress-bar">
+                    <div class="progress-bar-inner"></div>
+                </div>
+                <!-- Step 1: Interests -->
+                <div class="assessment-step active" data-step="1">
+                    <h3>Step 1: Your Interests</h3><p>What kind of activities do you enjoy? Select all that apply.</p>
+                    <div class="options-grid">
+                        <div class="option-card" data-value="technology"><i class="fas fa-laptop-code"></i><span>Technology</span></div>
+                        <div class="option-card" data-value="creative"><i class="fas fa-paint-brush"></i><span>Creative Arts</span></div>
+                        <div class="option-card" data-value="business"><i class="fas fa-briefcase"></i><span>Business</span></div>
+                        <div class="option-card" data-value="healthcare"><i class="fas fa-heartbeat"></i><span>Healthcare</span></div>
+                        <div class="option-card" data-value="education"><i class="fas fa-book"></i><span>Education</span></div>
+                        <div class="option-card" data-value="outdoors"><i class="fas fa-tree"></i><span>Outdoors</span></div>
+                    </div>
+                    <div class="assessment-navigation"><button class="assessment-btn next" disabled>Next <i class="fas fa-arrow-right"></i></button></div>
+                </div>
+                <!-- Step 2: Skills -->
+                <div class="assessment-step" data-step="2">
+                    <h3>Step 2: Your Skills</h3><p>What are you good at? Identify your strongest skills.</p>
+                     <div class="options-grid">
+                        <div class="option-card" data-value="communication"><i class="fas fa-comments"></i><span>Communication</span></div>
+                        <div class="option-card" data-value="problem-solving"><i class="fas fa-lightbulb"></i><span>Problem-Solving</span></div>
+                        <div class="option-card" data-value="leadership"><i class="fas fa-users"></i><span>Leadership</span></div>
+                        <div class="option-card" data-value="analytical"><i class="fas fa-chart-line"></i><span>Analytical</span></div>
+                        <div class="option-card" data-value="technical"><i class="fas fa-cogs"></i><span>Technical</span></div>
+                        <div class="option-card" data-value="creative-thinking"><i class="fas fa-brain"></i><span>Creative Thinking</span></div>
+                    </div>
+                    <div class="assessment-navigation"><button class="assessment-btn prev"><i class="fas fa-arrow-left"></i> Previous</button><button class="assessment-btn next" disabled>Next <i class="fas fa-arrow-right"></i></button></div>
+                </div>
+                <!-- Step 3: Values -->
+                <div class="assessment-step" data-step="3">
+                    <h3>Step 3: Your Work Values</h3><p>What's most important to you in a job?</p>
+                     <div class="options-grid">
+                        <div class="option-card" data-value="work-life-balance"><i class="fas fa-balance-scale"></i><span>Work-Life Balance</span></div>
+                        <div class="option-card" data-value="salary"><i class="fas fa-dollar-sign"></i><span>High Salary</span></div>
+                        <div class="option-card" data-value="impact"><i class="fas fa-globe"></i><span>Making an Impact</span></div>
+                        <div class="option-card" data-value="autonomy"><i class="fas fa-user-check"></i><span>Autonomy</span></div>
+                        <div class="option-card" data-value="stability"><i class="fas fa-shield-alt"></i><span>Job Stability</span></div>
+                        <div class="option-card" data-value="growth"><i class="fas fa-level-up-alt"></i><span>Growth Opportunity</span></div>
+                    </div>
+                    <div class="assessment-navigation"><button class="assessment-btn prev"><i class="fas fa-arrow-left"></i> Previous</button><button class="assessment-btn" id="finishAssessmentBtn" disabled>Finish Assessment</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ASSESSMENT RESULTS PAGE -->
+    <div id="resultsPage">
+        <div class="container">
+             <header>
+                <h2>Assessment Results</h2>
+                <button class="back-btn" id="backToAssessmentBtn"><i class="fas fa-arrow-left"></i> Redo Assessment</button>
+            </header>
+            <div class="results-content">
+                <section class="summary-section">
+                    <h3>Your Profile Summary</h3>
+                    <div class="summary-grid">
+                        <div class="summary-list" id="interestsSummary"><h4>Interests</h4></div>
+                        <div class="summary-list" id="skillsSummary"><h4>Skills</h4></div>
+                        <div class="summary-list" id="valuesSummary"><h4>Values</h4></div>
+                    </div>
+                </section>
+                <div class="generate-btn-container">
+                    <button class="assessment-btn" id="generateIdeasBtn">✨ Generate Career Ideas</button>
+                </div>
+                <div id="careerIdeasContainer">
+                    <!-- AI-Generated Career cards will be injected here -->
+                </div>
+                 <div id="startLearningBtnContainer">
+                    <button class="assessment-btn" id="startLearningBtn">Start Learning Path</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PERSONALIZED PATHS PAGE -->
+    <div id="pathsPage">
+        <div class="container">
+            <header>
+                <h2>Your Personalized Path</h2>
+                <button class="back-btn" id="backToDashboardBtn2"><i class="fas fa-arrow-left"></i> Back to Dashboard</button>
+            </header>
+            <div class="path-content">
+                <section class="skills-gap-section" id="pathSkillsGap">  
+                </section>
+                
+                <section class="career-roadmap">
+                    <div class="timeline" id="pathTimeline">
+                        <!-- AI-Generated Timeline will be injected here -->
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+     <!-- INTERVIEW PREP PAGE -->
+    <div id="interviewPage">
+        <div class="container">
+            <header>
+                <h2>Interview Prep</h2>
+                <button class="back-btn" id="backToDashboardBtn4"><i class="fas fa-arrow-left"></i> Back to Dashboard</button>
+            </header>
+            <div class="interview-content">
+                <h3 id="interviewTitle">Common Interview Questions</h3>
+                <div class="faq-accordion" id="faqAccordion">
+                     <!-- AI-Generated questions will go here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- RE-DESIGNED LEARNING RESOURCES PAGE -->
+    <div id="resourcesPage">
+        <div class="container">
+            <header>
+                 <h2>Your Learning Hub</h2>
+                <button class="back-btn" id="backToDashboardBtn3"><i class="fas fa-arrow-left"></i> Back to Dashboard</button>
+            </header>
+            <div class="resources-content">
+                <div class="resources-main">
+                    <div class="filter-tabs">
+                        <button class="filter-tab active" data-filter="all">All</button>
+                        <button class="filter-tab" data-filter="course">Courses</button>
+                        <button class="filter-tab" data-filter="book">Books</button>
+                        <button class="filter-tab" data-filter="video">Videos</button>
+                    </div>
+                    <div class="resource-list">
+                        <!-- Resource Card 1 -->
+                        <div class="resource-card" data-category="course">
+                            <div class="resource-card-icon"><i class="fas fa-graduation-cap"></i></div>
+                            <div class="resource-card-content">
+                                <h3>Python for Everybody</h3>
+                                <p>A comprehensive course by University of Michigan covering all basics.</p>
+                                <a href="https://www.py4e.com/lessons" target="_blank" class="resource-action-btn">Start Learning</a>
+                                <div class="resource-progress"><div class="resource-progress-inner" style="width: 60%;"></div></div>
+                            </div>
+                        </div>
+                         <!-- Resource Card 2 -->
+                        <div class="resource-card" data-category="course">
+                            <div class="resource-card-icon"><i class="fas fa-server"></i></div>
+                            <div class="resource-card-content">
+                                <h3>SQL for Data Science</h3>
+                                <p>Learn SQL from scratch for data analysis from University of California, Davis.</p>
+                                <a href="https://www.coursera.org/learn/sql-for-data-science" target="_blank" class="resource-action-btn">Start Learning</a>
+                                <div class="resource-progress"><div class="resource-progress-inner" style="width: 25%;"></div></div>
+                            </div>
+                        </div>
+                         <!-- Resource Card 3 -->
+                        <div class="resource-card" data-category="book">
+                           <div class="resource-card-icon"><i class="fas fa-book"></i></div>
+                            <div class="resource-card-content">
+                                <h3>Automate the Boring Stuff with Python</h3>
+                                <p>A practical guide to Python 3 for complete beginners. (Free to Read Online)</p>
+                                <a href="https://automatetheboringstuff.com/" target="_blank" class="resource-action-btn">Read for Free</a>
+                                <div class="resource-progress"><div class="resource-progress-inner" style="width: 0%;"></div></div>
+                            </div>
+                        </div>
+                         <!-- Resource Card 4 -->
+                        <div class="resource-card" data-category="video">
+                           <div class="resource-card-icon"><i class="fab fa-youtube"></i></div>
+                            <div class="resource-card-content">
+                                <h3>Tableau Full Course</h3>
+                                <p>An 11-hour deep dive into data visualization with Tableau by Simplilearn.</p>
+                                <a href="https://www.youtube.com/watch?v=aHaUiK4gImQ" target="_blank" class="resource-action-btn">Watch Video</a>
+                                <div class="resource-progress"><div class="resource-progress-inner" style="width: 10%;"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="resources-sidebar">
+                    <div class="sidebar-widget">
+                        <h3><i class="fas fa-rocket"></i> Quick Skill-Up</h3>
+                        <ul>
+                            <li><a href="#"><i class="fas fa-bolt"></i> 5-Minute Pandas Trick</a></li>
+                            <li><a href="#"><i class="fas fa-bolt"></i> Tableau Tip of the Day</a></li>
+                            <li><a href="#"><i class="fas fa-bolt"></i> SQL Subquery Practice</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- RESUME BUILDER PAGE -->
+    <div id="resumePage" class="page-container">
+        <header>
+            <h2>AI Resume Builder</h2>
+            <div>
+                 <button class="back-btn" id="backToDashboardBtn5"><i class="fas fa-arrow-left"></i> Back to Dashboard</button>
+            </div>
+        </header>
+        <div class="resume-builder-content">
+            <div class="resume-input-container">
+                <h3>Tell Us About Yourself</h3>
+                <textarea id="resumeInputText" class="form-textarea" placeholder="Paste your details, work experience, skills, and education here... The more detail, the better! The AI will structure it for you."></textarea>
+                <button class="assessment-btn" id="generateResumeBtn" style="width: 100%;">✨ Generate Resume with AI</button>
+            </div>
+            <div class="resume-preview-container">
+                <div class="resume-preview" id="resumePreview">
+                    <!-- This content will be replaced dynamically -->
+                    <h1>Priya Sharma</h1>
+                    <p>Software Engineer</p>
+                    <div class="preview-contact">
+                        <span>priya.sharma.dev@email.com</span> | 
+                        <span>+91 98765 43210</span> | 
+                        <span>Hyderabad, India</span>
+                    </div>
+                    <hr>
+                    <h3>Professional Summary</h3>
+                    <p>Detail-oriented and results-driven Software Engineer with over 4 years of experience in designing, developing, and deploying scalable backend services and dynamic frontend applications. Proficient in Java, Spring Boot, Python, and modern JavaScript frameworks like React. Proven ability to work in fast-paced, Agile environments and a passion for solving complex problems with clean, efficient code.</p>
+                    <hr>
+                    <h3>Work Experience</h3>
+                    <div>
+                        <h4>Software Engineer</h4>
+                        <p><em>TechSolutions Pvt. Ltd. | June 2021 - Present</em></p>
+                        <p>Developed and maintained high-traffic, microservices-based applications using Java 11+, Spring Boot, and Hibernate, resulting in a 20% improvement in API response times. Collaborated with a cross-functional team to build a responsive user interface using React and Redux, enhancing user engagement by 15%.</p>
+                    </div>
+                    <div>
+                        <h4>Associate Software Engineer</h4>
+                        <p><em>Innovatech Corp. | July 2019 - May 2021</em></p>
+                        <p>Contributed to the development of a flagship CRM product, writing clean and maintainable code in Python and Django. Participated in the full software development lifecycle (SDLC) following Agile methodologies.</p>
+                    </div>
+                    <hr>
+                    <h3>Education</h3>
+                    <div>
+                         <p><strong>Bachelor of Technology in Computer Science</strong> - Jawaharlal Nehru Technological University, Hyderabad</p>
+                    </div>
+                    <hr>
+                    <h3>Skills</h3>
+                    <p>Java, Spring Boot, Python, JavaScript, React, SQL, AWS, Docker, Git</p>
+                </div>
+            </div>
+             <div style="width: 100%; max-width: 800px; text-align: center; margin-bottom: 20px;">
+                <button class="assessment-btn" id="downloadPdfBtn"><i class="fas fa-download"></i> Download PDF</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- COVER LETTER PAGE -->
+    <div id="coverLetterPage" class="page-container">
+         <header>
+            <h2>AI Cover Letter Writer</h2>
+            <button class="back-btn" id="backToDashboardBtn6"><i class="fas fa-arrow-left"></i> Back to Dashboard</button>
+        </header>
+        <div class="cover-letter-content">
+            <form id="coverLetterForm">
+                 <h3>Job Details</h3>
+                 <input type="text" id="clJobTitle" placeholder="Job Title You're Applying For" class="form-input">
+                 <input type="text" id="clCompany" placeholder="Company Name" class="form-input">
+                 <textarea id="clJobDesc" placeholder="Paste the job description here..." class="form-textarea" style="min-height: 150px;"></textarea>
+                 <button type="button" class="assessment-btn" id="generateCoverLetterBtn" style="width: 100%;">✨ Generate Cover Letter</button>
+            </form>
+            <div id="generatedCoverLetterContainer">
+
+    <textarea
+        id="generatedCoverLetter"
+        placeholder="Your AI-generated cover letter will appear here...">
+    </textarea>
+
+    <button
+        id="downloadCoverLetterBtn"
+        class="assessment-btn"
+        style="width:100%; margin-top:15px;">
+
+        <i class="fas fa-download"></i>
+        Download Cover Letter PDF
+
+    </button>
+
+</div>
+                    <div style="text-align:center; margin-top:20px;">
+            </div>
+        </div>
+    </div>
+    
+    <!-- SKILL TREE PAGE -->
+    <div id="skillTreePage">
+        <div class="container">
+            <header>
+                <h2 id="skillTreeHeader">Your Skill Tree</h2>
+                <button class="back-btn" id="backToDashboardBtn7"><i class="fas fa-arrow-left"></i> Back to Dashboard</button>
+            </header>
+            <div class="skill-tree-content">
+                <div class="skill-tree-content">
+
+    <!-- ADD HERE -->
+
+    <div class="skill-progress">
+
+        <div class="progress-header">
+
+            <span>Overall Progress</span>
+
+            <span id="skillProgressText">0%</span>
+
+        </div>
+
+        <div class="progress-bar">
+
+            <div
+                class="progress-fill"
+                id="skillProgressFill">
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Existing code -->
+    <div class="skill-tree-container"
+         id="skillTreeContainer">
+
+    </div>
+</div>
+                    
+                    
+                    <!-- Skill Tree will be dynamically generated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- JOB RECOMMENDATIONS PAGE -->
+<div id="jobsPage" class="page-container">
+    <div class="container">
+
+        <header>
+            <h2>Job Recommendations</h2>
+
+            <button class="back-btn" id="backToDashboardJobs">
+                <i class="fas fa-arrow-left"></i>
+                Back to Dashboard
+            </button>
+        </header>
+
+        <div id="jobsContainer">
+    <!-- Jobs will load here -->
+</div>
+
+    </div>
+</div>
+
+    <!-- PROFILE PAGE -->
+    <div id="profilePage" class="page-container">
+        <header>
+            <h2>Your Profile</h2>
+            <button class="back-btn" id="backToDashboardBtn8"><i class="fas fa-arrow-left"></i> Back to Dashboard</button>
+        </header>
+        <div class="profile-content">
+            <div class="profile-card">
+                <div class="profile-header">
+                    <div class="profile-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h3 id="profileName">Priya Sharma</h3>
+                    <p id="profileEmail">priya.sharma.dev@email.com</p>
+                </div>
+                <div class="profile-stats">
+                    <div class="stat-item">
+                        <i class="fas fa-fire"></i>
+                        <span id="profileStreak">0</span>
+                        <p>Day Streak</p>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-bullseye"></i>
+                        <span id="profilePath">Not Set</span>
+                        <p>Career Path</p>
+                    </div>
+                </div>
+                <div class="profile-assessment-summary">
+                    <h4>Assessment Summary</h4>
+                    <div id="profileAssessmentDetails">
+                        <p>Complete the career assessment to see your summary here.</p>
+                    </div>
+                </div>
+                 <button class="assessment-btn" id="editProfileBtn" style="width: 100%; margin-top: 20px;">Edit Profile</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- LOADING MODAL -->
+    <div id="loadingModal">
+        <div class="loader"></div>
+    </div>
+    
+    <!-- NOTIFICATION PERMISSION MODAL -->
+    <div id="notificationModal">
+        <p>Enable notifications to get daily reminders and keep your learning streak going!</p>
+        <div>
+            <button id="allowNotificationsBtn">Allow</button>
+            <button id="dismissNotificationsBtn" class="dismiss">Maybe Later</button>
+        </div>
+    </div>
+    
+    <!-- PROJECT MODAL -->
+    <div id="projectModal">
+        <div class="project-modal-content">
+            <h3 id="projectModalTitle"></h3>
+            <p id="projectModalDesc"></p>
+            <form id="projectForm">
+                 <textarea id="projectDetails" class="form-textarea" placeholder="Briefly describe your project or link to your work (e.g., GitHub, portfolio). The AI will provide feedback on your approach."></textarea>
+                 <div id="projectFeedback" class="feedback-result" style="display:none; margin-bottom: 15px;"></div>
+                 <div class="project-modal-buttons">
+                    <button type="button" class="assessment-btn prev" id="closeProjectModalBtn">Cancel</button>
+                    <button type="submit" class="assessment-btn" id="submitProjectBtn">Submit for Validation</button>
+                 </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/config.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/ui.js"></script>
+
+<script src="js/app.js"></script>
+
+<script src="js/auth.js"></script>
+
+<script src="js/gemini.js"></script>
+
+<script src="js/assessment.js"></script>
+<script src="js/results.js"></script>
+<script src="js/careerpath.js"></script>
+<script src="js/interview.js"></script>
+<script src="js/resources.js"></script>
+<script src="js/resume.js"></script>
+<script src="js/coverletter.js"></script>
+<script src="js/skilltree.js"></script>
+<script src="js/jobs.js"></script>
+<script src="js/profile.js"></script>
+
+<script src="js/navigation.js"></script>
+<script src="js/notifications.js"></script>
+<script src="js/toast.js"></script>
+
+
+<div id="pageLoader" class="page-loader">
+    <div class="loader-spinner"></div>
+    <p>Loading...</p>
+</div>
+</body>
+</html>

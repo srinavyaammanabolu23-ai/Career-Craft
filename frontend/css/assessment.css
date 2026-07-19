@@ -1,0 +1,82 @@
+ /* --- ASSESSMENT PAGE STYLES --- */
+        #assessmentPage {
+            display: none; opacity: 0; width: 100%; min-height: 100vh; transition: opacity 0.5s ease-in-out; align-items: flex-start; justify-content: center; padding: 20px; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow-y: auto;
+        }
+        #assessmentPage .container {
+             max-width: 800px; width: 100%; background: white; border-radius: 12px; box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1); overflow: hidden; margin-top: 20px; margin-bottom: 20px;
+        }
+         #assessmentPage header {
+            background: #2c3e50; color: white; padding: 20px 30px; display: flex; justify-content: space-between; align-items: center;
+        }
+        #assessmentPage header h2 { font-size: 24px; }
+        .back-btn {
+            background: none; border: none; color: white; font-size: 16px; cursor: pointer; display: flex; align-items: center; gap: 8px;
+        }
+        .assessment-content { padding: 30px 40px; }
+        .progress-bar {
+            width: 100%; height: 8px; background-color: #e0e0e0; border-radius: 4px; overflow: hidden; margin-bottom: 30px;
+        }
+        .progress-bar-inner {
+            width: 33%; height: 100%; background-color: #3498db; transition: width 0.4s ease;
+        }
+        .assessment-step { display: none; }
+        .assessment-step.active { display: block; }
+        .assessment-step h3 { font-size: 22px; color: #2c3e50; margin-bottom: 10px; }
+        .assessment-step p { font-size: 16px; color: #7f8c8d; margin-bottom: 25px; }
+        .options-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 25px;
+        }
+        .option-card {
+            background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 8px; padding: 15px; text-align: center; cursor: pointer; transition: all 0.3s ease;
+        }
+        .option-card:hover {
+            transform: translateY(-3px); box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .option-card.selected {
+            background-color: #3498db; color: white; border-color: #2980b9;
+        }
+        .option-card i { font-size: 24px; margin-bottom: 10px; }
+        .assessment-navigation {
+            display: flex; justify-content: space-between; margin-top: 30px; border-top: 1px solid #e9ecef; padding-top: 20px;
+        }
+        .assessment-btn {
+             background: #3498db; color: white; padding: 12px 30px; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 16px; border: none; cursor: pointer; transition: background-color 0.3s ease;
+        }
+        .assessment-btn:hover { background: #2980b9; }
+        .assessment-btn:disabled { background: #e0e0e0; cursor: not-allowed; }
+         /* --- ASSESSMENT RESULTS PAGE STYLES --- */
+        #resultsPage {
+             display: none; opacity: 0; width: 100%; min-height: 100vh; transition: opacity 0.5s ease-in-out; align-items: flex-start; justify-content: center; padding: 20px; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow-y: auto;
+        }
+        #resultsPage .container {
+            max-width: 900px; width: 100%; background: white; border-radius: 12px; box-shadow: 0 15px 30px rgba(0,0,0,0.1); overflow: hidden; margin: 20px 0;
+        }
+        #resultsPage header {
+             background: #2c3e50; color: white; padding: 20px 30px; display: flex; justify-content: space-between; align-items: center;
+        }
+        .results-content { padding: 30px 40px; }
+        .summary-section {
+             background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 8px; padding: 25px; margin-bottom: 30px;
+        }
+        .summary-section h3 { text-align: center; margin-bottom: 20px; }
+        .summary-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+        .summary-list h4 { font-size: 16px; color: #34495e; margin-bottom: 10px; }
+        .summary-list span { background: #e9ecef; color: #34495e; padding: 5px 10px; border-radius: 5px; font-size: 14px; margin: 0 5px 5px 0; display: inline-block; }
+        .generate-btn-container { text-align: center; margin: 20px 0; }
+        #careerIdeasContainer {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;
+        }
+        .career-idea-card {
+            background: white; border: 2px solid #e0e0e0; border-radius: 8px; padding: 20px; cursor: pointer; transition: all 0.3s ease;
+        }
+        .career-idea-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+        .career-idea-card.selected {
+            border-color: #3498db;
+            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.3);
+        }
+        .career-idea-card h4 { margin-bottom: 10px; color: #3498db; }
+        #startLearningBtnContainer {
+            text-align: center;
+            margin-top: 30px;
+            display: none; /* Hidden by default */
+        }  

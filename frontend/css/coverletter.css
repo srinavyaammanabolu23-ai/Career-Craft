@@ -1,0 +1,29 @@
+ /* --- COVER LETTER PAGE STYLES --- */
+        .cover-letter-content {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            flex-grow: 1;
+            overflow-y: auto;
+            gap: 20px;
+        }
+        #coverLetterForm {
+            background: white; padding: 25px; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+         #coverLetterForm h3 {
+            margin-top: 0; margin-bottom: 15px; color: #2c3e50;
+        }
+        #generatedCoverLetterContainer {
+             background: white; padding: 25px; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); flex-grow: 1;
+        }
+        #generatedCoverLetter {
+            width: 100%;
+            height: 100%;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            padding: 15px;
+            font-family: 'Georgia', serif;
+            font-size: 16px;
+            line-height: 1.7;
+            box-sizing: border-box;
+        }

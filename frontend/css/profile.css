@@ -1,0 +1,97 @@
+/* --- PROFILE PAGE STYLES --- */
+        #profilePage {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 20px;
+            box-sizing: border-box;
+            width: 100%;
+        }
+        .profile-content {
+            width: 100%;
+            max-width: 600px;
+            margin-top: 20px;
+        }
+        .profile-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            padding: 30px;
+            text-align: center;
+        }
+        .profile-header {
+            margin-bottom: 25px;
+        }
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #3498db, #2c3e50);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 15px;
+            color: white;
+            font-size: 50px;
+        }
+        .profile-header h3 {
+            margin: 0;
+            font-size: 24px;
+            color: #2c3e50;
+        }
+        .profile-header p {
+            margin: 5px 0 0;
+            font-size: 16px;
+            color: #7f8c8d;
+        }
+        .profile-stats {
+            display: flex;
+            justify-content: space-around;
+            padding: 20px 0;
+            border-top: 1px solid #f0f0f0;
+            border-bottom: 1px solid #f0f0f0;
+            margin-bottom: 25px;
+        }
+        .stat-item {
+            flex: 1;
+        }
+        .stat-item i {
+            font-size: 20px;
+            color: #3498db;
+            margin-bottom: 8px;
+        }
+        .stat-item span {
+            display: block;
+            font-size: 22px;
+            font-weight: 700;
+            color: #34495e;
+        }
+        .stat-item p {
+            margin: 0;
+            font-size: 14px;
+            color: #95a5a6;
+        }
+        .profile-assessment-summary h4 {
+            color: #2c3e50;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+        #profileAssessmentDetails .summary-list {
+            text-align: left;
+            margin-bottom: 10px;
+        }
+        #profileAssessmentDetails .summary-list h5 {
+            font-size: 15px;
+            color: #34495e;
+            margin-bottom: 8px;
+        }
+         #profileAssessmentDetails .summary-list span {
+            background: #e9ecef;
+            color: #34495e;
+            padding: 4px 8px;
+            border-radius: 5px;
+            font-size: 13px;
+            margin: 0 4px 4px 0;
+            display: inline-block;
+        }
