@@ -1,62 +1,18 @@
-// =================================================================
-//  CAREER CRAFT BACKEND - Main Server Entry Point
-// =================================================================
-console.log("THIS IS THE SERVER I AM EDITING");
-
 require("dotenv").config();
 
-const express = require('express');
-const connectDB = require('./config/db');
-const cors = require('cors');
-
+const express = require("express");
 const app = express();
-
-// Connect to Database
-connectDB();
-
-// Init Middleware
-app.use(cors());
-app.use(express.json({ extended: false }));
-
-// Define Routes
-app.use('/api/auth', require('./routes/auth'));
-app.use('/api/assessment', require('./routes/assessment'));
-app.use('/api/path', require('./routes/careerPath'));
-app.use('/api/skilltree', require('./routes/skillTree'));
-console.log("Loading Resume Route...");
-app.use("/api/resume", require("./routes/resume"));
-console.log("Resume Route Loaded.");
-
-console.log("Loading Cover Letter Route...");
-app.use("/api/coverletter", require("./routes/coverletter"));
-console.log("Cover Letter Route Loaded.");
-app.use("/api/interview", require("./routes/interview"));
-app.use("/api/jobs", require("./routes/jobs"));
-app.use("/api/ai", require("./routes/ai"));
-
-
-// Health Check
-app.get("/", (req, res) => {
-    res.send("Career Craft Backend is Running 🚀");
-});
-
-app.get("/test", (req, res) => {
-    res.json({
-        success: true
-    });
-});
-
 
 const PORT = process.env.PORT || 5000;
 
-const server = app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Server running on port ${PORT}`);
+app.get("/", (req, res) => {
+    res.send("Backend Works!");
 });
 
-server.on("listening", () => {
-    console.log("Express is listening successfully.");
+app.get("/test", (req, res) => {
+    res.json({ success: true });
 });
 
-server.on("error", (err) => {
-    console.error("Server Error:", err);
+app.listen(PORT, "0.0.0.0", () => {
+    console.log(`Listening on ${PORT}`);
 });
