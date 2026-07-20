@@ -4,7 +4,7 @@
 
 const CONFIG = {
 
-    API_BASE_URL: "http://localhost:5000/api",
+   API_BASE_URL: "https://career-craft-backend-73m2.onrender.com/api",
 
     GEMINI_BASE_URL:
         "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent",
